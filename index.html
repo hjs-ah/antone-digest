@@ -1,0 +1,1667 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<script>
+(function(){if(window.claude)return;var P='hd-db:';
+function load(n){try{return JSON.parse(localStorage.getItem(P+n)||'{}')}catch(e){return{}}}
+function save(n,o){localStorage.setItem(P+n,JSON.stringify(o))}
+var subs={};
+function docs(n){var o=load(n);return Object.keys(o).map(function(id){return{id:id,data:function(){return JSON.parse(JSON.stringify(o[id]))}}})}
+function fire(n){(subs[n]||[]).forEach(function(cb){cb({docs:docs(n)})})}
+function col(n){return{
+onSnapshot:function(cb){(subs[n]=subs[n]||[]).push(cb);setTimeout(function(){cb({docs:docs(n)})},0)},
+doc:function(id){return{
+set:function(v){var o=load(n);o[id]=v;save(n,o);fire(n);return Promise.resolve()},
+update:function(v){var o=load(n);o[id]=Object.assign({},o[id]||{},v);save(n,o);fire(n);return Promise.resolve()},
+delete:function(){var o=load(n);delete o[id];save(n,o);fire(n);return Promise.resolve()}}},
+add:function(v){var o=load(n);var id='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);o[id]=v;save(n,o);fire(n);return Promise.resolve({id:id})}}}
+window.claude={use:function(k){return Promise.resolve(k==='db'?{collection:col}:null)}};
+})();
+</script>
+<title>Antone’s Digest</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='4' width='28' height='24' rx='3' fill='%23241F17'/%3E%3Crect x='6' y='8' width='9' height='7' fill='%23F4ECD8'/%3E%3Crect x='17' y='8' width='9' height='2' fill='%23F4ECD8'/%3E%3Crect x='17' y='12' width='9' height='2' fill='%23F4ECD8'/%3E%3Crect x='6' y='17' width='20' height='2' fill='%23F4ECD8'/%3E%3Crect x='6' y='21' width='14' height='2' fill='%23F4ECD8'/%3E%3C/svg%3E">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&family=Raleway:wght@500..900&family=EB+Garamond:wght@500..800&display=swap">
+<script>
+try {
+var _t = localStorage.getItem('hd-theme');
+document.documentElement.setAttribute('data-theme', (_t === 'dark' || _t === 'white') ? _t : 'light');
+if (localStorage.getItem('hd-head') === 'garamond') document.documentElement.setAttribute('data-head', 'garamond');
+} catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+</script>
+<style>
+/* Layout: broadsheet front page on cream stock. Two columns of panes (front page left, workshop right), a full-width tabbed desk below, all rearrangeable from the Layout overlay. */
+:root {
+--paper: #F4ECD8;
+--card: #FBF6E8;
+--tab: #EADFC4;
+--tab-hover: #E0D3B2;
+--ink: #241F17;
+--muted: #665D4B;
+--hair: #D6CAAE;
+--accent: #23408E;
+--ok: #1E6B43;
+--warn: #8F4E00;
+--alert: #A8281F;
+--font: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+--head: "Raleway", "Inter", system-ui, sans-serif;
+color-scheme: light;
+}
+:root[data-head="garamond"] { --head: "EB Garamond", Garamond, "Times New Roman", serif; }
+:root[data-theme="dark"] {
+--paper: #12100C; --card: #1C1913; --tab: #171510; --tab-hover: #26221A; --ink: #EFE7D4; --muted: #A89F8A; --hair: #353025;
+--accent: #9FB6FF; --ok: #6CC59A; --warn: #E3A650; --alert: #FF8F85;
+color-scheme: dark;
+}
+:root[data-theme="white"] {
+--paper: #FFFFFF; --card: #FFFFFF; --tab: #F1F1F1; --tab-hover: #E7E7E7; --ink: #141414; --muted: #5B5B5B; --hair: #DADADA;
+--accent: #1F3A8A; --ok: #1E6B43; --warn: #8F4E00; --alert: #A8281F;
+color-scheme: light;
+}
+html { overflow-y: scroll; scroll-padding-top: 130px; }
+::-webkit-scrollbar { width: 14px; height: 14px; }
+::-webkit-scrollbar-track { background: var(--tab); }
+::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 8px; border: 3px solid var(--tab); min-height: 48px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
+@supports (-moz-appearance: none) { html { scrollbar-width: auto; scrollbar-color: var(--muted) var(--tab); } }
+* { box-sizing: border-box; }
+body {
+background: var(--paper); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.5;
+margin: 0; padding-block: 18px 56px;
+padding-left: max(16px, env(safe-area-inset-left, 0px));
+padding-right: max(16px, env(safe-area-inset-right, 0px));
+font-feature-settings: "tnum" 1, "cv11" 1;
+}
+.page { max-width: 1240px; margin: 0 auto; }
+a { color: var(--accent); text-underline-offset: 2px; }
+h1, h2, h3, h4, p, ul, dl, dd { margin: 0; }
+h1, h2, h3, h4 { text-wrap: balance; }
+h1 { font-family: var(--head); font-feature-settings: "lnum" 1; }
+:root[data-head="garamond"] h1 { font-weight: 700; }
+button { font: inherit; }
+.sr { position: absolute; left: -9999px; }
+
+/* Masthead */
+.topline { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; }
+.nameplate { border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 12px 0 10px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; }
+.nameplate h1 { font-size: clamp(34px, 8.6vw, 92px); font-weight: 800; letter-spacing: -.035em; line-height: .95; }
+.nameplate .strap { font-size: 13px; font-weight: 500; color: var(--muted); max-width: 26ch; }
+.bar { position: sticky; top: 0; z-index: 30; background: var(--paper); border-bottom: 3px double var(--ink); padding: 8px 0; }
+.bar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.mini { font-family: var(--head); font-weight: 800; letter-spacing: -.01em; font-size: 17px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.bar:not(.scrolled) .mini { display: none; }
+.jump { display: flex; flex: 1 1 auto; flex-wrap: wrap; gap: 0 2px; font-size: 13px; font-weight: 600; min-width: 0; }
+.jump a { color: var(--ink); text-decoration: none; padding: 6px 9px; border-radius: 4px; white-space: nowrap; }
+.jump a:hover { background: var(--tab); }
+.jump a[aria-current="true"] { background: var(--ink); color: var(--paper); }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; margin-left: auto; }
+.mob-only { display: none; }
+.icon-btn { width: 36px; height: 36px; border: 1px solid var(--hair); background: transparent; color: var(--ink); border-radius: 6px; display: grid; place-items: center; cursor: pointer; flex: none; padding: 0; }
+.icon-btn:hover { background: var(--tab); border-color: var(--ink); }
+.collapse-btn { display: inline-flex; align-items: center; gap: 6px; }
+.switch { position: relative; width: 60px; height: 32px; border-radius: 16px; border: 1px solid var(--hair); background: var(--tab); cursor: pointer; padding: 0; flex: none; color: var(--ink); }
+.switch svg { position: absolute; top: 6px; width: 18px; height: 18px; }
+.switch .sun { left: 7px; }
+.switch .moon { right: 7px; }
+.switch .knob { position: absolute; top: 2px; left: 2px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ink); transition: transform .18s; }
+.switch[aria-checked="true"] .knob { transform: translateX(28px); }
+.white-btn { background: #FFFFFF !important; color: #141414 !important; border: 1px solid #8A8A8A !important; }
+.white-btn[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
+.ph-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pane-toggle { width: 32px; height: 32px; border: 0; background: transparent; color: var(--muted); cursor: pointer; border-radius: 4px; display: grid; place-items: center; padding: 0; margin-left: auto; }
+.pane-toggle:hover { background: var(--tab); color: var(--ink); }
+.pane-toggle svg { transition: transform .15s; }
+.pane.collapsed .pane-toggle svg { transform: rotate(-90deg); }
+.pane.collapsed .pane-body { display: none; }
+.pick h3 { padding-right: 36px; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--hair); }
+.stat { padding: 12px 16px 12px 0; min-width: 0; }
+.stat + .stat { border-left: 1px solid var(--hair); padding-left: 16px; }
+.stat b { display: block; font-size: clamp(28px, 4.6vw, 42px); font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+.stat span { display: block; margin-top: 5px; font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+#savenote { font-size: 12.5px; color: var(--warn); margin-top: 8px; }
+
+/* Controls */
+input[type=text], input[type=date], input[type=url], select, textarea {
+font: inherit; font-size: 14px; color: var(--ink); background: var(--card);
+border: 1px solid var(--hair); border-radius: 4px; padding: 7px 9px; min-height: 36px; min-width: 0; max-width: 100%;
+}
+textarea { width: 100%; resize: vertical; min-height: 64px; }
+input:focus-visible, select:focus-visible, button:focus-visible, textarea:focus-visible, summary:focus-visible, a:focus-visible, .pane-body:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+button.pri { font-size: 13.5px; font-weight: 650; border-radius: 4px; padding: 7px 14px; min-height: 36px; cursor: pointer; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); }
+button.ghost { font-size: 13px; font-weight: 600; border-radius: 4px; padding: 5px 12px; min-height: 34px; cursor: pointer; border: 1px solid var(--hair); background: transparent; color: var(--ink); }
+button.ghost:hover { border-color: var(--ink); background: var(--tab); }
+button:disabled, input:disabled, select:disabled, textarea:disabled { opacity: .5; cursor: not-allowed; }
+.x { position: absolute; top: 4px; right: 0; width: 32px; height: 32px; border: 0; background: transparent; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; border-radius: 4px; display: grid; place-items: center; }
+.x:hover, .x:focus-visible { color: var(--alert); background: var(--tab); }
+
+/* Grid and panes */
+.grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0 28px; margin-top: 20px; align-items: start; }
+.zone { display: grid; gap: 24px; min-width: 0; align-content: start; }
+.zone.wide { grid-column: 1 / -1; margin-top: 24px; }
+.zone:empty { display: none; }
+.pane { border-top: 2px solid var(--ink); display: flex; flex-direction: column; min-width: 0; scroll-margin-top: 130px; }
+.pane:focus { outline: none; }
+.pane.flash { animation: flash 1.4s ease-out; }
+@keyframes flash { from { background: color-mix(in srgb, var(--accent) 18%, transparent); } to { background: transparent; } }
+.pane-head { padding: 8px 0 8px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 16px; }
+.pane-head h2 { font-size: 22px; font-weight: 750; letter-spacing: -.015em; }
+.pane-head .note { font-size: 12.5px; color: var(--muted); }
+.pane-body { padding: 2px 0 8px; }
+.kicker { font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); }
+.sub-h { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 4px; font-family: var(--font); }
+.empty { color: var(--muted); font-size: 14px; padding: 10px 0; }
+.chip { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 1px 7px; border-radius: 99px; background: color-mix(in srgb, var(--muted) 16%, transparent); color: var(--muted); white-space: nowrap; }
+.chip.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 15%, transparent); }
+.chip.warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 15%, transparent); }
+.chip.alert { color: var(--alert); background: color-mix(in srgb, var(--alert) 14%, transparent); }
+.chip.acc { color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+
+/* Front */
+.lead h3 { font-size: clamp(24px, 3.4vw, 34px); font-weight: 780; letter-spacing: -.025em; line-height: 1.08; margin: 6px 0 10px; }
+.deck { color: var(--muted); font-size: 15.5px; margin-bottom: 8px; max-width: 60ch; }
+
+/* Threads */
+.thread-wrap { position: relative; border-top: 1px solid var(--hair); }
+.thread-wrap:first-child { border-top: 0; }
+.thread > summary { list-style: none; cursor: pointer; padding: 10px 40px 10px 22px; position: relative; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+.thread > summary::-webkit-details-marker { display: none; }
+.thread > summary::before { content: ""; position: absolute; left: 3px; top: 17px; width: 7px; height: 7px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(-45deg); transition: transform .15s; }
+.thread[open] > summary::before { transform: rotate(45deg); top: 15px; }
+.th-title { font-weight: 620; line-height: 1.35; }
+.th-when { font-size: 12px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.th-body { padding: 0 8px 14px 22px; display: grid; gap: 9px; }
+.th-body dt { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.th-body dd { font-size: 14px; line-height: 1.5; margin-top: 1px; }
+.th-links { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; font-weight: 600; }
+
+/* Forms */
+.addbox { margin-top: 12px; border-top: 1px solid var(--hair); padding-top: 8px; }
+.addbox > summary { cursor: pointer; font-size: 13px; font-weight: 650; color: var(--accent); padding: 4px 0; }
+.stackform { display: grid; gap: 8px; margin-top: 8px; }
+.stackform label, .rowform label { display: grid; gap: 3px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); min-width: 0; }
+.stackform input, .stackform textarea, .stackform select, .rowform input, .rowform select { width: 100%; text-transform: none; letter-spacing: 0; font-weight: 400; }
+.rowform { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; align-items: end; margin-bottom: 10px; }
+
+/* Reading */
+.pick { position: relative; border-top: 1px solid var(--hair); padding: 12px 0 12px; }
+.pick:first-child { border-top: 0; }
+.pick h3 { font-size: 16.5px; font-weight: 700; line-height: 1.25; padding-right: 6px; }
+.pick .by { font-size: 12.5px; color: var(--muted); margin: 3px 0 5px; }
+.pick .why { font-size: 14px; }
+.pick .acts { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 8px; font-size: 13px; font-weight: 600; }
+.pick.read h3 { color: var(--muted); }
+.rhythm { font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--hair); padding-bottom: 8px; }
+
+/* Workshop */
+.band { border-top: 1px solid var(--hair); }
+.band > summary { cursor: pointer; list-style: none; padding: 9px 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; display: flex; gap: 8px; align-items: center; }
+.band > summary::-webkit-details-marker { display: none; }
+.band > summary::before { content: ""; width: 7px; height: 7px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(-45deg); transition: transform .15s; margin-right: 4px; }
+.band[open] > summary::before { transform: rotate(45deg); }
+.repo-wrap { position: relative; padding: 9px 36px 10px 0; border-top: 1px solid var(--hair); }
+.repo-wrap:first-of-type { border-top: 0; }
+.repo-top { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: baseline; }
+.repo-name { font-weight: 680; overflow-wrap: anywhere; }
+.repo-meta { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.repo-links { display: flex; flex-wrap: wrap; gap: 3px 14px; font-size: 13px; font-weight: 600; margin-top: 3px; }
+.repo-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.nolive { color: var(--muted); font-weight: 450; }
+
+/* Desk tabs: flush, no gaps, hover shifts the shade */
+.tabs { display: flex; margin: 0; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: 1 1 0; min-width: max-content; padding: 11px 14px; border: 1px solid var(--hair); border-bottom: 0; margin: 0 0 0 -1px; background: var(--tab); color: var(--muted); font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: .03em; cursor: pointer; border-radius: 0; text-transform: uppercase; }
+.tab:first-child { margin-left: 0; }
+.tab:hover { background: var(--tab-hover); color: var(--ink); }
+.tab[aria-selected="true"] { background: var(--card); color: var(--ink); box-shadow: 0 2px 0 var(--card); position: relative; z-index: 1; }
+.tab:focus-visible { outline-offset: -3px; }
+#pane-desk .pane-head { padding-bottom: 0; }
+#pane-desk .pane-body { background: var(--card); border: 1px solid var(--hair); padding: 14px 18px 14px; margin-top: -1px; }
+.facts { list-style: none; padding: 0; margin: 4px 0 6px; font-size: 14px; }
+.facts li { padding: 6px 0; border-top: 1px solid var(--hair); }
+.facts li:first-child { border-top: 0; }
+.facts b { font-weight: 650; }
+.qb-entry { position: relative; padding: 8px 36px 8px 0; border-top: 1px solid var(--hair); font-size: 14px; }
+.qb-entry .d { font-size: 12px; color: var(--muted); display: block; font-variant-numeric: tabular-nums; }
+.advisor { position: relative; border-top: 1px solid var(--hair); padding: 12px 36px 12px 0; display: grid; gap: 6px; }
+.advisor h4 { font-size: 17px; font-weight: 700; }
+.advisor .role { font-size: 13px; color: var(--muted); }
+.advisor textarea { min-height: 56px; font-size: 14px; }
+
+/* Career */
+.pipe { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.app { position: relative; border-top: 1px solid var(--hair); padding: 10px 36px 10px 0; display: grid; gap: 6px 12px; grid-template-columns: minmax(0, 1.5fr) 130px 100px minmax(0, 1.6fr); align-items: center; }
+.app:first-of-type { border-top: 0; }
+.app .co b { display: block; }
+.app .co span { font-size: 13px; color: var(--muted); }
+.app .row2 { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.6fr) 150px auto; gap: 8px 12px; align-items: center; }
+.app .row2 input { width: 100%; }
+.app .when { font-size: 13px; font-variant-numeric: tabular-nums; }
+.app .nts { font-size: 13px; color: var(--muted); }
+
+/* Writing */
+.spark { background: color-mix(in srgb, var(--accent) 9%, var(--card)); border-left: 3px solid var(--accent); padding: 8px 12px; font-size: 14px; margin-bottom: 12px; }
+.idea { position: relative; border-top: 1px solid var(--hair); padding: 10px 36px 10px 0; }
+.idea p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.idea .m { font-size: 12.5px; color: var(--muted); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+
+/* Artifacts, goals */
+.art-group { margin-bottom: 8px; }
+.art { position: relative; padding: 7px 36px 7px 0; border-top: 1px solid var(--hair); display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; }
+.art a { font-weight: 620; }
+.art span { font-size: 12.5px; color: var(--muted); }
+.goalrow { position: relative; padding: 8px 36px 8px 0; border-top: 1px solid var(--hair); display: grid; gap: 2px; }
+.goalrow b { font-weight: 600; }
+.goalrow span { font-size: 13px; color: var(--muted); }
+.goalrow span.dated { color: var(--alert); font-weight: 650; }
+.jots { margin-top: 20px; border-top: 1px solid var(--hair); padding-top: 4px; }
+.jot-sum { font-size: 14px; line-height: 1.5; margin-top: 2px; }
+.two-col { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
+.jot-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 2px 0 6px; }
+.jot-nav button.ghost { min-height: 30px; padding: 3px 10px; }
+.jot-nav .wk { font-size: 12.5px; font-weight: 650; }
+.jot-sub { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 14px 0 0; }
+@media (max-width: 1100px) { .two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.colophon { margin-top: 40px; border-top: 4px solid var(--ink); padding-top: 12px; font-size: 12.5px; color: var(--muted); display: grid; gap: 6px; max-width: 86ch; }
+
+/* Overlay */
+.scrim { position: fixed; inset: 0; background: color-mix(in srgb, #000 55%, transparent); z-index: 50; display: grid; place-items: center; padding: 16px; }
+.scrim[hidden] { display: none; }
+.sheet { background: var(--card); color: var(--ink); width: min(920px, 100%); max-height: min(90vh, 900px); overflow: auto; border: 1px solid var(--ink); border-radius: 6px; padding: 18px 20px 22px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.sheet-head h2 { font-size: 24px; font-weight: 750; }
+.sheet p.help { font-size: 13.5px; color: var(--muted); margin-bottom: 12px; max-width: 70ch; }
+.map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.zone-box { border: 1.5px dashed var(--hair); border-radius: 6px; padding: 8px; min-height: 84px; background: var(--paper); }
+.zone-box.w { grid-column: 1 / -1; }
+.zone-box h3 { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-family: var(--font); }
+.chipbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: var(--card); border: 1px solid var(--hair); border-radius: 5px; padding: 5px 6px 5px 10px; margin-bottom: 6px; }
+.chipbar .go { flex: 1 1 auto; text-align: left; border: 0; background: transparent; font-weight: 650; font-size: 14px; color: var(--ink); cursor: pointer; padding: 4px 0; min-height: 32px; }
+.chipbar .go:hover { color: var(--accent); text-decoration: underline; }
+.chipbar button.mv { border: 1px solid var(--hair); background: transparent; color: var(--ink); border-radius: 4px; min-width: 34px; min-height: 32px; padding: 2px 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.chipbar button.mv:hover:not(:disabled) { border-color: var(--ink); background: var(--tab); }
+.set-sec { border-top: 1px solid var(--hair); margin-top: 18px; padding-top: 12px; }
+.set-sec h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.mutes { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.mute { display: inline-flex; align-items: center; gap: 4px; padding: 3px 4px 3px 10px; border: 1px solid var(--hair); border-radius: 99px; font-size: 13px; }
+.mute button { border: 0; background: transparent; cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; width: 26px; height: 26px; border-radius: 50%; }
+.mute button:hover { color: var(--alert); background: var(--tab); }
+.radios { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 6px; font-size: 14px; }
+.radios label { display: inline-flex; gap: 6px; align-items: center; min-height: 32px; cursor: pointer; }
+#toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 14px; border-radius: 6px; font-size: 14px; z-index: 60; display: flex; gap: 12px; align-items: center; max-width: calc(100vw - 32px); }
+#toast[hidden] { display: none; }
+#toast button { background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 3px 10px; cursor: pointer; font-weight: 650; min-height: 30px; }
+
+.design-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.tile { position: relative; min-width: 0; }
+.tile a.thumb { display: flex; align-items: center; height: 40px; padding: 0 40px 0 12px; border: 1px solid var(--hair); border-radius: 6px; overflow: hidden; background: color-mix(in srgb, var(--accent) 10%, var(--card)); text-decoration: none; color: var(--ink); }
+.tile a.thumb:hover { border-color: var(--ink); background: var(--tab); }
+.tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile .ph { display: block; min-width: 0; width: 100%; padding: 0; text-align: left; font-weight: 700; font-size: 14px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .ph small { display: inline; font-weight: 500; font-size: 12px; color: var(--muted); margin: 0 0 0 8px; }
+.tile .cap { font-size: 13px; margin-top: 6px; overflow-wrap: anywhere; }
+.tile .cap span { color: var(--muted); display: block; font-size: 12px; }
+.tile .x { top: 4px; right: 4px; width: 32px; height: 32px; background: transparent; }
+.idea-actions { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-top: 8px; }
+.idea-actions select { min-height: 34px; font-size: 13px; }
+.linkbtn { display: inline-block; font-size: 13px; font-weight: 600; border: 1px solid var(--hair); border-radius: 4px; padding: 6px 12px; text-decoration: none; color: var(--ink); }
+.linkbtn:hover { border-color: var(--ink); background: var(--tab); }
+
+.zone.wide { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 28px; align-items: start; }
+.zone.wide > .pane { grid-column: 1 / -1; }
+.zone.wide > .pane.half { grid-column: auto; }
+.seg { display: inline-flex; border: 1px solid var(--hair); border-radius: 6px; overflow: hidden; flex: none; }
+.seg button { border: 0; background: transparent; color: var(--ink); min-height: 34px; padding: 0 11px; display: inline-flex; align-items: center; gap: 6px; font: 600 13px/1 var(--font); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--hair); }
+.seg button:hover { background: var(--tab); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg svg { display: none; }
+.pane-head > .pane-focus { margin-left: auto; }
+.pane-head > .pane-toggle { margin-left: 0; }
+.pane-focus { min-width: 32px; height: 32px; border: 0; background: transparent; color: var(--muted); cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 6px; font: 600 13px/1 var(--font); }
+.pane-focus:hover { background: var(--tab); color: var(--ink); }
+.pane-focus .fl { display: none; }
+#pane-desk .pane-head { flex-wrap: nowrap; align-items: center; gap: 8px; }
+#pane-desk .tabs { flex: 1 1 auto; min-width: 0; }
+.grip, .rz { display: none; }
+.craft-sum { font-size: 13px; color: var(--muted); margin: 6px 0 4px; }
+.craft-entry { position: relative; padding: 10px 44px 10px 0; border-top: 1px solid var(--hair); }
+.craft-entry:first-of-type { border-top: 0; }
+.craft-entry .ce-head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.craft-entry b { font-weight: 700; }
+.craft-entry p { margin: 4px 0 0; font-size: 14.5px; line-height: 1.45; }
+.yt { position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--hair); background: #000; border-radius: 4px; overflow: hidden; }
+.yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.yt-row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 10px; }
+@media (max-width: 699px) { #canvasBtn, #tidyBtn { display: none !important; } }
+
+
+@media (max-width: 369px) { #scrollBtn { display: none !important; } }
+@media (max-width: 339px) { .jump a { padding: 0 8px !important; } .tools { gap: 3px !important; } .seg button { padding: 0 4px !important; } #whiteBtn { padding-inline: 5px !important; } .bar-row { gap: 4px !important; } }
+
+@media (max-width: 860px) {
+body { padding-block: 8px 40px; }
+.grid { grid-template-columns: minmax(0, 1fr); margin-top: 14px; }
+.grid > .zone + .zone { margin-top: 24px; }
+.zone.wide { margin-top: 24px; grid-template-columns: minmax(0, 1fr); }
+.zone.wide > .pane.half { grid-column: 1 / -1; }
+.topline { font-size: 11px; }
+.topline span:nth-child(3) { display: none; }
+.stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.stat:nth-child(3) { border-left: 0; padding-left: 0; }
+.stat:nth-child(n+3) { border-top: 1px solid var(--hair); }
+.nameplate .strap { max-width: none; }
+.bar-row { gap: 5px; flex-wrap: nowrap; }
+.mini { display: none !important; }
+.jump { order: 0; flex: 0 0 auto; flex-wrap: nowrap; overflow: visible; gap: 0; padding: 0; }
+.jump a { border: 1px solid var(--hair); border-radius: 99px; padding: 0 12px; white-space: nowrap; font-size: 13px; min-height: 36px; display: flex; align-items: center; flex: none; }
+.tools { order: 1; flex: 1 1 auto; min-width: 0; flex-wrap: nowrap; justify-content: safe flex-end; margin-left: 0; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tools::-webkit-scrollbar { display: none; }
+.tools > * { flex: none; }
+.seg button { min-height: 36px; padding: 0 6px; }
+.seg button span { display: none; }
+.seg svg { display: block; }
+.switch { width: 48px; height: 32px; }
+.switch svg { width: 15px; height: 15px; top: 8px; }
+.switch .sun { left: 6px; }
+.switch .moon { right: 6px; }
+.switch .knob { width: 24px; height: 24px; }
+.switch[aria-checked="true"] .knob { transform: translateX(16px); }
+.switch .sun { left: 5px; }
+.switch .moon { right: 5px; }
+#whiteBtn { padding-inline: 7px; font-size: 13px; }
+.pane-focus { min-width: 40px; height: 40px; }
+#pane-desk .tab { padding-inline: 6px; }
+button.ghost, .icon-btn { min-height: 36px; }
+.icon-btn { width: 30px; height: 36px; }
+.jump a { padding: 0 11px; }
+.pane-head h2 { font-size: 20px; }
+.pane-toggle { width: 40px; height: 40px; }
+.lead h3 { font-size: 26px; }
+.two-col, .map { grid-template-columns: minmax(0, 1fr); }
+.design-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.app { grid-template-columns: minmax(0, 1fr) 120px; }
+.app .when, .app .nts { grid-column: 1 / -1; }
+.app .row2 { grid-template-columns: minmax(0, 1fr); }
+#pane-desk .pane-body { padding: 12px 12px; }
+.tab { padding: 13px 10px; font-size: 12.5px; }
+.x { width: 40px; height: 40px; top: 2px; }
+.thread > summary { padding-block: 12px; }
+.thread > summary::before { top: 19px; }
+.thread[open] > summary::before { top: 17px; }
+input[type=text], input[type=date], input[type=url], select, textarea { font-size: 16px; min-height: 44px; }
+button.pri { min-height: 44px; }
+}
+/* ---- horizontal scroll mode ---- */
+html.hs .grid { display: flex; flex-direction: row; align-items: stretch; gap: 18px; overflow-x: auto; overflow-y: hidden; height: calc(100vh - var(--barh, 64px) - 16px); height: calc(100dvh - var(--barh, 64px) - 16px); scroll-snap-type: x proximity; position: relative; margin-top: 12px; padding-bottom: 6px; }
+html.hs .zone, html.hs .zone.wide { display: contents; margin: 0; }
+html.hs .pane { flex: 0 0 min(88vw, 470px); height: 100%; min-height: 0; scroll-snap-align: start; padding: 0 14px 6px; background: var(--card); border: 1px solid var(--hair); border-top: 2px solid var(--ink); }
+html.hs #pane-desk { flex-basis: min(92vw, 640px); }
+html.hs .pane-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+html.hs .pane.collapsed { height: auto; align-self: flex-start; }
+html.hs #pane-desk .pane-body { padding: 12px 12px; }
+/* ---- focus mode ---- */
+body.focus-open { overflow: hidden; }
+html .pane.focused { position: fixed !important; inset: 0 !important; z-index: 70; width: auto !important; height: auto !important; max-height: none !important; margin: 0 !important; overflow-y: auto; overflow-x: hidden; background: var(--paper); border: 0; box-shadow: none; border-radius: 0; padding: max(0px, env(safe-area-inset-top)) clamp(16px, 5vw, 80px) 48px; }
+html .pane.focused > * { width: 100%; max-width: 1060px; margin-left: auto; margin-right: auto; }
+html .pane.focused .pane-head { position: sticky; top: 0; z-index: 3; background: var(--paper); padding: 14px 0 12px; border-bottom: 2px solid var(--ink); margin-bottom: 8px; }
+html .pane.focused .pane-head h2 { font-size: clamp(26px, 4.4vw, 42px); }
+html .pane.focused .pane-body { overflow: visible; flex: none; display: block; }
+html .pane.focused .pane-toggle, html .pane.focused .grip, html .pane.focused .rz { display: none; }
+html .pane.focused .pane-focus .fl { display: inline; }
+html .pane.focused .pane-focus { background: var(--ink); color: var(--paper); padding: 0 12px; height: 38px; }
+html .pane.focused #b-desk { background: var(--card); }
+/* ---- floating canvas mode ---- */
+html.cv .bar { position: static; }
+html.cv .page { max-width: none; margin: 0; }
+html.cv .grid { display: block; position: relative; margin-top: 24px; }
+html.cv .zone, html.cv .zone.wide { display: contents; margin: 0; }
+html.cv .pane { position: absolute; width: 460px; background: var(--card); border: 1px solid var(--hair); border-top: 3px solid var(--ink); border-radius: 8px; box-shadow: 0 8px 26px rgba(0, 0, 0, .14); padding: 0 16px 14px; overflow: hidden; }
+html.cv .pane[data-h] { overflow: auto; }
+html.cv .pane.dragging { box-shadow: 0 16px 44px rgba(0, 0, 0, .28); z-index: 60; }
+html.cv .grip { display: block; height: 22px; margin: 0 -16px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; background: radial-gradient(circle, var(--muted) 1.5px, transparent 1.7px) center / 12px 8px repeat-x; opacity: .85; }
+html.cv .pane.dragging .grip { cursor: grabbing; }
+html.cv .pane-head { touch-action: none; }
+html.cv .rz { display: block; position: absolute; right: 0; bottom: 0; width: 34px; height: 34px; cursor: nwse-resize; touch-action: none; background: linear-gradient(135deg, transparent 52%, var(--muted) 53%, var(--muted) 58%, transparent 59%, transparent 70%, var(--muted) 71%, var(--muted) 76%, transparent 77%); }
+html.cv #pane-desk .pane-body { padding: 12px 12px; }
+html.cv .pane-body { padding-bottom: 28px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="page">
+<div class="topline"><span id="today"></span><span id="weekline"></span><span>Private copy for Antone Holmes</span></div>
+<header class="nameplate" id="nameplate">
+<h1 id="top">Antone’s Digest</h1>
+<p class="strap">Scholarship, ministry, work and home, in one weekly read.</p>
+</header>
+<div class="bar" id="bar">
+<div class="bar-row">
+<a class="mini" href="#top" id="miniTitle">Antone’s Digest</a>
+<nav class="jump" id="jump" aria-label="Sections"></nav>
+<div class="tools">
+<button type="button" class="icon-btn" id="scrollBtn" aria-label="Scroll mode: vertical. Switch to horizontal." title="Scroll direction"></button>
+<button type="button" class="icon-btn" id="layoutBtn" aria-label="Edit layout" title="Edit layout" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="2.5" width="8" height="19" rx="1.5"/><rect x="13" y="2.5" width="8.5" height="10" rx="1.5"/><rect x="13" y="15" width="8.5" height="6.5" rx="1.5"/></svg></button>
+<button type="button" class="ghost" id="canvasBtn" aria-pressed="false" title="Free-floating canvas for tablets and big screens">Canvas</button>
+<button type="button" class="ghost" id="tidyBtn" hidden title="Re-flow the floating sections">Tidy</button>
+<div class="seg" role="group" aria-label="Open and close sections" id="viewSeg">
+<button type="button" data-view="default" aria-pressed="true" aria-label="Default view" title="Default view"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg><span>Default</span></button>
+<button type="button" data-view="collapse" aria-pressed="false" aria-label="Collapse all" title="Collapse all"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4l5 5 5-5M7 20l5-5 5 5"/></svg><span>Collapse</span></button>
+<button type="button" data-view="expand" aria-pressed="false" aria-label="Expand all" title="Expand all"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9l5-5 5 5M7 15l5 5 5-5"/></svg><span>Expand</span></button>
+</div>
+<button type="button" class="switch" id="themeSwitch" role="switch" aria-checked="false" aria-label="Dark mode"><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span class="knob"></span></button>
+<button type="button" class="ghost white-btn" id="whiteBtn" aria-pressed="false">White</button>
+</div>
+</div>
+</div>
+<div class="stats" aria-label="At a glance">
+<div class="stat"><b id="s-open">0</b><span>Open threads</span></div>
+<div class="stat"><b id="s-craft">0</b><span>Career desk entries</span></div>
+<div class="stat"><b id="s-repos">0</b><span>Repos pushed in 30 days</span></div>
+<div class="stat"><b id="s-days">0</b><span id="s-days-l">Days to Dec 31</span></div>
+</div>
+<p id="savenote" hidden></p>
+
+<main class="grid" id="grid">
+<div class="zone" id="zone-left" data-zone="left">
+<section class="pane" id="pane-front" tabindex="-1" aria-labelledby="h-front">
+<div class="pane-head"><h2 id="h-front">Front page</h2><span class="note">What leads this week</span></div>
+<div class="pane-body" id="b-front" role="region" aria-label="Front page"></div>
+</section>
+<section class="pane" id="pane-reading" tabindex="-1" aria-labelledby="h-reading">
+<div class="pane-head"><h2 id="h-reading">This week's reading</h2><span class="note" id="reading-note"></span></div>
+<div class="pane-body" id="b-reading" role="region" aria-label="This week's reading"></div>
+</section>
+</div>
+<div class="zone" id="zone-right" data-zone="right">
+<section class="pane" id="pane-workshop" tabindex="-1" aria-labelledby="h-workshop">
+<div class="pane-head"><h2 id="h-workshop">Workshop</h2><span class="note">GitHub hjs-ah · Vercel production · Notion</span></div>
+<div class="pane-body" id="b-workshop" role="region" aria-label="Workshop"></div>
+</section>
+<section class="pane" id="pane-artifacts" tabindex="-1" aria-labelledby="h-artifacts">
+<div class="pane-head"><h2 id="h-artifacts">Artifacts and hubs</h2><span class="note">Where you keep working</span></div>
+<div class="pane-body" id="b-artifacts" role="region" aria-label="Artifacts and hubs"></div>
+</section>
+</div>
+<div class="zone wide" id="zone-wide" data-zone="wide">
+<section class="pane" id="pane-desk" tabindex="-1" aria-label="Desk">
+<div class="pane-head"><div class="tabs" role="tablist" aria-label="Desk" id="tabs"></div></div>
+<div class="pane-body" id="b-desk" role="tabpanel"></div>
+</section>
+<section class="pane" id="pane-design" tabindex="-1" aria-labelledby="h-design">
+<div class="pane-head"><h2 id="h-design">Design feed</h2><span class="note">Four looks to keep your eye sharp</span></div>
+<div class="pane-body" id="b-design" role="region" aria-label="Design feed"></div>
+</section>
+<section class="pane half" id="pane-career" tabindex="-1" aria-labelledby="h-career">
+<div class="pane-head"><h2 id="h-career">Career desk</h2><span class="note">Skills, tools, builds, portfolio and certs</span></div>
+<div class="pane-body" id="b-career" role="region" aria-label="Career desk"></div>
+</section>
+<section class="pane half" id="pane-writing" tabindex="-1" aria-labelledby="h-writing">
+<div class="pane-head"><h2 id="h-writing">What's on your mind</h2><span class="note">Writing ideas for Medium, sermons and anything else</span></div>
+<div class="pane-body" id="b-writing" role="region" aria-label="Writing ideas"></div>
+</section>
+<section class="pane" id="pane-playlist" tabindex="-1" aria-labelledby="h-playlist">
+<div class="pane-head"><h2 id="h-playlist">Playlist</h2><span class="note">A YouTube playlist, framed in place</span></div>
+<div class="pane-body" id="b-playlist" role="region" aria-label="Playlist"></div>
+</section>
+<section class="pane" id="pane-goals" tabindex="-1" aria-labelledby="h-goals">
+<div class="pane-head"><h2 id="h-goals">Goals, loose ends and recent jots</h2><span class="note">What you are aiming at, what stopped mid-build, and what you jotted this week</span></div>
+<div class="pane-body" id="b-goals" role="region" aria-label="Goals, loose ends and recent jots"></div>
+</section>
+</div>
+</main>
+
+<div class="colophon">
+<p id="mutenote"></p>
+<p><b>How this edition was assembled.</b> From your Notion workspace, Gmail, Google Calendar, Google Drive, GitHub and Vercel accounts, and your past chats with me. Reading picks come from topic searches on your dissertation themes; a Zotero export will let me tune them. Threads, notes, ideas and layout are saved on this page.</p>
+<p><b>Not yet read.</b> The church finance inbox, family and community plans outside the calendar, and your Zotero library.</p>
+<p><b>Recent jots.</b> Apple Notes pulled by me when your computer is linked to this chat, shown by the week each was created, with the last three from before this week. Notes about passwords or logins are never pulled. Ideas saved as Sync with Apple Notes are written into Apple Notes on my next sync.</p>
+</div>
+</div>
+
+<div class="scrim" id="overlay" hidden>
+<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ov-title" id="sheet"></div>
+</div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function () {
+'use strict';
+var root = document.documentElement;
+
+/* ---------- Static content ---------- */
+var NOTION = function (id) { return 'https://app.notion.com/p/' + id; };
+var DRIVE_PLAN = 'https://docs.google.com/document/d/1qyYXLnMzGluDmQLxokw-9NYiMKduPk9fU4WBixxgNSk/edit';
+var HUB = NOTION('324fffd7c625819a8eb5c450ebcf3cae');
+var TRACKER = NOTION('8f07fd34d5a54bb383f3d75091bcb08c');
+var OPS = NOTION('324fffd7c6258179a5ddff1d48e60c6c');
+var ART = function (id) { return 'https://claude.ai/artifact/' + id; };
+
+var PANES = [
+['front', 'Front page', 'Front'], ['reading', "This week's reading", 'Reading'], ['workshop', 'Workshop', 'Workshop'], ['artifacts', 'Artifacts and hubs', 'Artifacts'],
+['desk', 'Desk tabs', 'Desk'], ['design', 'Design feed', 'Design'], ['career', 'Career desk', 'Career'], ['writing', "What's on your mind", 'Writing'], ['playlist', 'Playlist', 'Playlist'], ['goals', 'Goals, loose ends and recent jots', 'Goals']
+];
+var DEFAULT_LAYOUT = { left: ['front', 'reading'], right: ['workshop', 'artifacts'], wide: ['desk', 'design', 'career', 'writing', 'playlist', 'goals'] };
+var ZONE_NAMES = { left: 'Left column', right: 'Right column', wide: 'Full width' };
+
+var TABS = [['scholarship', 'Scholarship'], ['ministry', 'Ministry'], ['home', 'Home'], ['development', 'Personal development']];
+
+var THREADS = [
+{ id: 'm-cashflow', area: 'ministry', pri: 1, title: "Verity cash-flow plan and Q1'27 model", when: 'Oct 19 to 23',
+left: "You replied on Oct 21 with the plan and the Drive doc, and told the leader on Oct 22 that modeled budgets would follow within the week. Through September, income is $357.3K against $362.5K of spending, and cash on hand was $72.7K on Oct 18 (about 71 days). Nine decisions are still open, including the designated one-time-spending quarter (Q2 proposed), the Subsplash move and the landlord rent break.",
+started: "The Verity leader asked, in reply to the Q3'26 Financial Overview, how to tighten cash-flow control and cut expenses.",
+next: 'Send the budget models and the Financial Health Scorecard (promised for about Oct 30).',
+links: [['The plan (Google Doc)', DRIVE_PLAN], ['Plan and Q1 model (artifact)', ART('RmtBW1Tej5KPwvenXrbbUy')]] },
+{ id: 'm-coat', area: 'ministry', pri: 1, title: 'Verity coat drive', when: 'Drive is Nov 21',
+left: 'The verity-coat-drive repo was last pushed Oct 13. I have not seen a finished collection system, and the cash-flow plan proposes a new $1,500 community outreach line that would cover it.',
+started: "On Oct 9 you told Vashti you would work on a collection system for the drive.",
+next: 'Decide how coats are collected and logged, and tie it to the outreach budget line.',
+links: [['Repo', 'https://github.com/hjs-ah/verity-coat-drive'], ['Live', 'https://verity-coat-drive.vercel.app']] },
+{ id: 'm-qb', area: 'ministry', pri: 1, title: 'QuickBooks books and bank-feed cleanup', when: 'Aug 3, ongoing',
+left: 'We settled what the daily Wells Fargo "MERCHANT BANKCD DEPOSIT" lines are: net daily card-settlement deposits. The fix is to book gross giving to a card or online giving income account and the fee difference to merchant processing fees. Per-donor detail has to come from the merchant portal or the giving platform. You set aside naming the platform, so that mapping is still open.',
+started: 'As head of the trustee board you were doing the church numbers and hit deposits that matched no sales record.',
+next: 'Run the monthly close from the Wells Fargo, Cash App and PayPal exports, then log what changed in the QuickBooks updates box on the Ministry tab.',
+links: [] },
+{ id: 'm-intake', area: 'ministry', title: 'Weekly cash-giving intake', when: 'Oct 20',
+left: 'The design is: envelope-photo email to the church finance Gmail, then a Zapier step into a Google Sheet intake log, then the monthly close reads that sheet into the Weekly Cash Donations rows. A Google Sheet sits in the middle because Zapier\'s free plan is limited and the Excel connector needs Microsoft 365 Business. The build is waiting on more information from you.',
+started: 'Cash giving was not logged by the date it was received, which made the quarterly income split unreliable.',
+next: 'If the team can type the weekly total instead of sending a photo, the workflow gets cheaper and more accurate.',
+links: [['The plan (Google Doc)', DRIVE_PLAN]] },
+{ id: 'm-tbi', area: 'ministry', title: 'Truth Bible Institute', when: 'Fall 2026',
+left: 'TBI is slated for fall 2026 under VOW Center. The TBI repo was last pushed Feb 4, and I see no launch steps since, with November close.',
+started: 'An April survey kicked off the planning for the institute.',
+next: 'Confirm the launch date and what is still unbuilt.',
+links: [['Education dashboard (Notion)', NOTION('34bfffd7c6258173acb6c3d176be767a')], ['Repo', 'https://github.com/hjs-ah/TBI']] },
+{ id: 'm-mentor', area: 'ministry', title: 'Chess Not Checkers mentorship deck', when: 'July',
+left: "The H2 2026 mentorship deck for the men's cohort (Endgame and Cornerstone tracks) was built. The cnc-assets repo was last pushed Mar 9.",
+started: 'You wanted a deck that lays out the mentorship program for the second half of 2026.',
+next: '',
+links: [['cnc-assets (Notion)', NOTION('34bfffd7c62581638538e612e6c725fe')]] },
+
+{ id: 's-align', area: 'scholarship', pri: 0, title: 'Dissertation alignment chain', when: 'June 10',
+left: 'The chain is finalized (theme, title, questions, aim, working hypothesis) and the method is qualitative-dominant mixed methods. Today the Notion Dissertation Hub and every Chapter Tracker row were rebuilt around it, and the Hub now says you are in coursework with comprehensive exams ahead.',
+started: 'You asked me to translate your theme into a title, then questions, an aim and a hypothesis, using what we had built on societal stewardship.',
+next: 'Pick among the three title options when ready, and name an advisor (still TBD in the Hub).',
+links: [['Dissertation Hub', HUB], ['Chapter Tracker', TRACKER]] },
+{ id: 's-dash', area: 'scholarship', title: 'Dissertation Dashboard', when: 'March',
+left: 'Built in React and Vite on Vercel, backed by Notion databases (Chapter Tracker, Programs, Grant Pipeline, Comments) with role-gated views. The AI research bar and Zotero sync were left for a second phase.',
+started: 'You wanted one command center that your committee and program partners could see.',
+next: 'Decide whether Phase 2 is worth reviving once the Zotero export is in.',
+links: [['Dashboard in Notion', NOTION('324fffd7c62581a48b88e1f9cb944810')], ['SIAD repo', 'https://github.com/hjs-ah/SIAD']] },
+{ id: 's-class', area: 'scholarship', title: 'RELO 850 and RELO 855 coursework', when: 'Oct 23',
+left: 'Your discussion posts and course repository are both kept as artifacts, and both were updated Oct 23.',
+started: 'You wanted coursework in one place you can return to between sessions.',
+next: 'Open the artifact for the course you are working in this week.',
+links: [['RELO 855 Repository', ART('CSXioNpbwV7cTYvE8Y5Gt6')], ['RELO 850 Discussion Posts', ART('Vspoi2bXYdRBxiW5FG2xkj')]] },
+{ id: 's-parents', area: 'scholarship', title: 'PARENTS and PLEDGE publication', when: 'June',
+left: 'The concept is named but not launched: PARENTS as the platform name, PLEDGE as the commitment framework inside it, possibly as one vertical within a wider societal stewardship publication.',
+started: 'You were exploring a Substack, Medium or YouTube playlist to carry your stewardship ideas to the public.',
+next: 'Choose a platform, then use the writing box below to collect the first five pieces.',
+links: [] },
+
+{ id: 'h-contractor', area: 'home', title: 'Home contractor dispute', when: 'Sep 18',
+left: 'Next steps are a demand letter and mediation, with counsel (ConsumerLawPA).',
+started: 'A home contractor dispute needed a structured path before it escalated.',
+next: 'Check where the demand letter stands.',
+links: [] },
+{ id: 'h-calendar', area: 'home', title: 'Calendar for family and community', when: 'Ongoing',
+left: 'Google Calendar is the system you chose, managed through me. It shows nothing from Oct 26 through Nov 8, so family and community dates still need to go in.',
+started: 'You wanted your calendar handled through Claude rather than by hand.',
+next: 'Send me the dates that matter and I will carry them.',
+links: [] },
+
+{ id: 'w-sucsynct', area: 'workshop', title: 'Sucsynct', when: 'Oct 16',
+left: 'You decided it should store analysis, not audio. A production domain exists (sucsynct.vercel.app), but I have not confirmed the latest deploy is healthy. Mockups and the earlier build are kept as artifacts.',
+started: 'A storytelling coaching app on Next.js and Supabase, which grew out of the speech-coaching idea.',
+next: 'Confirm the deploy, then use it yourself.',
+links: [['SucSynct (artifact)', ART('XLWZEpNSsPwW4MArmL1W1q')], ['Desktop mockup', ART('NkkzhYbPpLhbeTkqwpkBJv')]] },
+{ id: 'c-adjunct', area: 'development', title: 'Adjunct teaching path', when: 'June to Sept',
+left: 'The advice was to lead with practitioner credibility (nonprofit leadership, sales leadership, pastoral ministry) and treat the PhD as a supporting signal. Targets named: Community College of Philadelphia, DCCC, MCCC, Camden County College, Palmer Theological Seminary, Lutheran Theological Seminary, and programs at LaSalle, Villanova, Temple and Drexel. A teaching CV was the first step, and I have not seen one.',
+started: 'You asked how to land adjunct roles with your current credentials, then how people teach college without a PhD.',
+next: 'Draft the teaching CV, then email one department chair.',
+links: [] }
+];
+
+var REPOS = [
+{ n: 'the-focal-shift', d: '2026-10-25', priv: 1, fam: 'Product', live: 'the-focal-shift.vercel.app', desc: 'Pushed today. Project folder: The Focal Shift.' },
+{ n: 'sucsynct', d: '2026-10-16', fam: 'Product', live: 'sucsynct.vercel.app', desc: 'Storytelling coaching app. Next.js, Supabase, Vercel.' },
+{ n: 'verity-coat-drive', d: '2026-10-13', fam: 'Verity', live: 'verity-coat-drive.vercel.app', notion: [['VOW Center Ops', '324fffd7c6258179a5ddff1d48e60c6c']], desc: 'Winter coat drive, Nov 21.' },
+{ n: 'bedrock-enablement-lo', d: '2026-10-12', fam: 'Career', live: 'bedrock-enablement-lo.vercel.app', notion: [['Cloud Learning Objects (likely)', '34bfffd7c62581e58f24c31ad86b9651']], desc: '' },
+{ n: 'AH-Resume-1.0', d: '2026-09-30', fam: 'Career', live: 'ah-resume-1-0.vercel.app', notion: [['Impact Narratives config', '34bfffd7c625819b8ee1d1fb39d95156'], ['Changelog', '34bfffd7c6258182bfa4f132d7118235']], desc: 'Portfolio site v1.0; v2.0 is the current build.' },
+{ n: 'verity-resource-hub', d: '2026-09-28', fam: 'Verity', live: 'verity-resource-hub.vercel.app', notion: [['VOW Center Ops', '324fffd7c6258179a5ddff1d48e60c6c']], desc: 'Project folder: Verity Resource Hub.' },
+{ n: 'verity-gifts', d: '2026-09-28', fam: 'Verity', live: 'verity-gifts.vercel.app', desc: '' },
+{ n: 'verity-gives', d: '2026-07-18', fam: 'Verity', live: 'verity-gives.vercel.app', notion: [['Verity Giving', '3a1fffd7c62581408ef8e63417b0e6ec']], desc: 'Verity Giving platform.' },
+{ n: 'ithirst-counter', d: '2026-07-18', fam: 'Verity', live: 'ithirst-counter.vercel.app', notion: [['Verity Giving', '3a1fffd7c62581408ef8e63417b0e6ec']], desc: 'iThirst water donations tracker.' },
+{ n: 'my-worldview', d: '2026-06-29', fam: 'Personal', live: 'my-worldview.vercel.app', desc: 'Personal hub PWA; Supabase sync still planned.' },
+{ n: 'vantage', d: '2026-06-15', fam: 'Product', live: 'vantaged.vercel.app', desc: 'Project folder: Vantage Delta HQ.' },
+{ n: 'vlc', d: '2026-06-12', fam: 'Other', live: 'vlc-philly.vercel.app', desc: '' },
+{ n: 'vlc-discipleship', d: '2026-06-11', fam: 'Other', live: 'vlc-discipleship.vercel.app', desc: '' },
+{ n: 'vteacher-schedule', d: '2026-06-03', fam: 'Other', live: 'vteacher-schedule.vercel.app', desc: '' },
+{ n: 'vow-statement-prod', d: '2026-04-16', fam: 'Verity', desc: '' },
+{ n: 'nonprofit-dash', d: '2026-04-09', fam: 'Verity', live: 'nonprofit-dash.vercel.app', notion: [['Nonprofit dashboard', '34bfffd7c625811f9788d396f9a0994b']], desc: 'The last Vercel build errored.' },
+{ n: 'AH-FE-2.0', d: '2026-04-08', fam: 'Career', live: 'ah-fe-2-0.vercel.app', notion: [['AH-FE 2.0', '34bfffd7c62581fe811cf604defc2ece']], desc: '' },
+{ n: 'star-story-cards', d: '2026-04-08', priv: 1, fam: 'Career', live: 'star-story-cards.vercel.app', notion: [['STAR story cards', '34bfffd7c62581ddbf0bff3dfbd7920b'], ['Interview Stories (STAR)', '34bfffd7c62581d1b501d865a645a320']], desc: 'STAR story cards for interviews.' },
+{ n: 'AH-bible_lessons', d: '2026-04-04', fam: 'Ministry', live: 'ah-bible-lessons.vercel.app', desc: '' },
+{ n: '4crowns', d: '2026-03-29', fam: 'Other', live: '4crowns.vercel.app', notion: [['4Crowns', '34bfffd7c625819aa6aaeeb5d58fda98']], desc: 'Project folder: 4Crowns.' },
+{ n: 'aws-study-object', d: '2026-03-20', fam: 'Career', live: 'aws-study-object.vercel.app', notion: [['AWS study object', '34bfffd7c625815b8607d45ca897dc62']], desc: '' },
+{ n: 'SIAD', d: '2026-03-15', fam: 'Scholarship', live: 'siad-nine.vercel.app', notion: [['SIAD framework', '34bfffd7c625813f9d48f654d415b1c6'], ['Dissertation SIAD Framework', '34bfffd7c62581289674c56042448679']], desc: 'Dissertation framework.' },
+{ n: 'SIAD_Master', d: '2026-03-15', fam: 'Scholarship', notion: [['Dissertation SIAD Framework', '34bfffd7c62581289674c56042448679']], desc: 'Dissertation framework, master copy.' },
+{ n: 'holmes_articulate-sample', d: '2026-03-13', fam: 'Other', desc: '' },
+{ n: 'cnc-assets', d: '2026-03-09', priv: 1, fam: 'Verity', live: 'cnc-assets.vercel.app', notion: [['Chess Not Checkers assets', '34bfffd7c62581638538e612e6c725fe']], desc: 'Chess Not Checkers assets.' },
+{ n: 'TBI', d: '2026-02-04', fam: 'Verity', notion: [['VOWC Education Dashboard', '34bfffd7c6258173acb6c3d176be767a']], desc: 'Truth Bible Institute.' },
+{ n: 'command-center-main', d: '2026-01-19', fam: 'Personal', notion: [['Command Center Home', '2bffffd7c625804e94f0db748ad4abf6']], desc: 'The Command Center.' }
+];
+
+var ARTIFACTS = [
+{ g: 'Scholarship', items: [
+['a-relo855', 'RELO 855 Repository', ART('CSXioNpbwV7cTYvE8Y5Gt6'), 'Oct 23'],
+['a-relo850', 'RELO 850 Discussion Posts', ART('Vspoi2bXYdRBxiW5FG2xkj'), 'Oct 23'],
+['a-hub', 'Dissertation Hub (Notion)', HUB, 'Updated today']] },
+{ g: 'Ministry', items: [
+['a-plan', 'Verity Cash Flow Plan and Q1 Model', ART('RmtBW1Tej5KPwvenXrbbUy'), 'Oct 21'],
+['a-plandoc', 'Verity Cash Flow Plan (Google Doc)', DRIVE_PLAN, 'Oct 21'],
+['a-ops', 'VOW Center Ops (Notion)', OPS, ''],
+['a-shame', 'Where Are You? Why Men Hide Shame', ART('LLtFmBRZrGy4h3WDhiEU8y'), 'Oct 23']] },
+{ g: 'Workshop', items: [
+['a-suc', 'SucSynct', ART('XLWZEpNSsPwW4MArmL1W1q'), 'Oct 11'],
+['a-sucm', 'Sucsynct Desktop Mockup', ART('NkkzhYbPpLhbeTkqwpkBJv'), 'Oct 16'],
+['a-tell', 'TellSync Planning Wireframes', ART('1AxeQmndUZwPyFtWKvHJR3'), 'Sep 28'],
+['a-cc', 'Command Center Home (Notion)', NOTION('2bffffd7c625804e94f0db748ad4abf6'), '']] },
+{ g: 'Career', items: [
+['a-cogent', 'Cogent Communications: Regional Sales Manager Prep', ART('SZ2d7RwkMKuqacgxvbrAgi'), 'Oct 16'],
+['a-answers', 'Application Answers: Pipeline and Prospecting', ART('AU91kjw96HwUXSU7DAbU47'), 'Oct 13'],
+['a-star', 'Interview Stories, STAR (Notion)', NOTION('34bfffd7c62581d1b501d865a645a320'), '']] }
+];
+
+var GOALS = [
+['g1', 'Finish the Subsplash migration', 'Before Dec 31', 1],
+['g2', 'Launch Truth Bible Institute', 'Fall 2026', 1],
+['g3', 'Send the Verity budget models and scorecard', 'About Oct 30', 1],
+['g4', 'Stand up a Verity fundraising committee', '2027', 0],
+['g5', 'Finish coursework, then sit comprehensive exams', 'Ongoing', 0],
+['g6', 'Land the next role: enablement, consulting, RevOps or L&D', 'Open', 0],
+['g7', 'Teach as an adjunct in the Philadelphia area', 'Exploring', 0],
+['g8', 'Use Sucsynct yourself, once it is deployed', 'Open', 0],
+['g9', 'Add Supabase sync to My Worldview', 'Open', 0]
+];
+var UNFINISHED = [
+['u1', 'Church cash-total intake automation', 'The build waits on more information from you.'],
+['u2', 'My Worldview hub', 'Local notes work; Supabase sync not started. Last push Jun 29.'],
+['u3', 'Verity Giving dashboard', 'Notion database ID and collection ID problems were only partly resolved.'],
+['u4', 'Speech coaching iOS app', 'Architecture sketched; I see no repository for it.'],
+['u5', 'Devotionals and writing', "The NEW Men's Devotional, God's Word, Divorce the Hurt and My Writing have project folders; last activity unknown."],
+['u6', 'Acquiring 501(c)(3) status for Verity', 'Project folder exists; status unknown.']
+];
+
+var READING = {
+weekKey: '2026-10-25',
+picks: [
+{ t: 'Black Male Mental Health and the Black Church: Advancing a Collaborative Partnership and Research Agenda', au: 'M. A. Robinson, S. Jones-Eversley, S. E. Moore, J. Ravenell, A. C. Adedoyin', yr: '2018', venue: 'Journal of Religion and Health',
+url: 'https://sites.edb.utexas.edu/bmerc/black-male-mental-health-and-the-black-church-advancing-a-collaborative-partnership-and-research-agenda/',
+why: "Argues Black churches are positioned to support Black men through faith-informed, gender-aware care, and ends with eight recommendations for church leaders. A model for sub-question 4: what stewarding congregations do differently.",
+spark: 'Which of the eight recommendations does your congregation already practice, and which does it not?' },
+{ t: 'Standing in the Gap: Informing Advocates for African American Male Youth in Underdeveloped Communities', au: 'Michael D. Royster', yr: '2018', venue: 'Emory University ETD',
+url: 'https://etd.library.emory.edu/concern/etds/6m311p359',
+why: 'Parents, educators, coaches and neighbors say where churches fall short with young Black males, and why leaders must understand generational change. It speaks to sub-question 2 and shows how an advocate-perspective study is built.',
+spark: 'Where might a church you know be misreading this generation?' },
+{ t: 'The Black Church (chapter)', au: 'Melvin Delgado', yr: '2024', venue: "When the Lord's House Closes: Church Repurposing and Urban Community Practice, Oxford University Press",
+url: 'https://academic.oup.com/book/57983/chapter/476462830',
+why: "Places Black Americans among the groups most closely tied to churches, in a book about what urban communities lose when church buildings close. Supports the anchor-institution claim in Chapter 1. Only the start of the abstract was readable, so check your library access.",
+spark: 'What does a neighborhood lose when its anchor congregation closes or leaves?' },
+{ t: "A Mandate for Action: The Church's Ministry With Urban Black Youth", au: 'Anne E. Streaty Wimberly', yr: '2014', venue: 'Journal of the Interdenominational Theological Center, vol. 40',
+url: 'https://journals.auctr.edu/index.php/jitc/article/view/1179',
+why: 'Argues congregations are obligated to minister with urban Black youth facing racism and hopelessness, and sets out three priorities, the "three C\'s." The closest match to your primary question; read it against SIAD\'s Incarnation and Discipleship pillars.',
+spark: 'Write the three C\'s of your own youth ministry in plain words.' },
+{ t: '#BlackLives(STILL)Matter after Trump: What Has Changed or Not, and Where Do We Go from Here?', au: 'Valerie Miles-Tribble', yr: '2022', venue: 'Currents in Theology and Mission, vol. 49, no. 1',
+url: 'https://currentsjournal.org/index.php/currents/article/download/331/363/1615',
+why: 'Calls faith communities to act as public catalysts for justice through intergenerational and interreligious collaboration, drawing on womanist ethics. Feeds the Activism pillar and your public theology writing.',
+spark: 'Where is a church you know too hesitant, and what would catalytic look like there?' }
+]
+};
+
+/* Recent jots: Apple Notes created in the digest week (Sunday to Saturday). Pulled by Claude, never typed here. Notes holding passwords or logins are never pulled. */
+var JOTS = {
+pulled: '2026-10-26', from: '2026-10-04',
+items: [
+{ id: 'n494', title: 'Insight', created: '2026-10-26', summary: 'Treating theology, anthropology and sociology as separate, single-threaded pillars, rather than layers that build on each other, is a problem. The note says it works against followership of the way and against Christ\u2019s reign in eschatological terms, keeps crab-barrel syndrome alive, and implores theologians to function at the core of society.' },
+{ id: 'n493', title: 'Jason college application', created: '2026-10-23', summary: 'Answers to a college\u2019s residency questions for Jason\u2019s application: licenses and car registration are in Virginia, you file Virginia state taxes, you are registered to vote in Virginia, and you own no real estate. The two license lines are left blank.' },
+{ id: 'n492', title: '[Message] I sent you a text/Check your text', created: '2026-10-22', summary: 'A short message starter. It opens with \u201cWhat in the world\u2026\u201d and rests on the line \u201cThe Creator sent you a text.\u201d' },
+{ id: 'n489', title: 'MNe', created: '2026-10-21', summary: 'Title only. The note is empty.' },
+{ id: 'n487', title: 'Electa Call', created: '2026-10-21', summary: 'Call prep for a recruiter conversation. You want to partner with recruiters in the area to get back to work and transition, and you are open to other roles that fit better. The last point, on moving to AWS because it was a better opportunity, is unfinished.' },
+{ id: 'n488', title: 'Jason College contenders', created: '2026-10-14', edited: '2026-10-21', summary: 'A research list of computing programs for a son with a 3.7 GPA: HBCUs (Hampton, Howard, NC A&T, Norfolk State, Morgan State, Bowie State, Delaware State), Virginia schools (Virginia Tech, UVA, George Mason, JMU) and Mid-Atlantic options (Maryland, Penn State, Drexel, Delaware), each with an admissions-fit rating. It ends by asking which schools he is applying to.' },
+{ id: 'n482', title: 'NEXT Message [Are you sure/Willing to pay the cost]', created: '2026-10-10', edited: '2026-10-19', summary: 'A message outline on 2 Peter 1:10 and 11. It opens with an indecision story about ordering food, argues that being indecisive means you can be sure you are not sure, and works through verses 3 to 5, with virtue as excellence (Greek aret\u0113), the four cardinal virtues, and Faith, Hope and Love.' }
+]
+};
+var JOT_BLOCK = /password|passcode|login|log-in|credential|\bssn\b|social security|account number|routing/i;
+var STATUSES = ['Exploring', 'Researching', 'Applied', 'Screen', 'Interview', 'Offer', 'Closed'];
+var IN_PLAY = { Applied: 1, Screen: 1, Interview: 1, Offer: 1 };
+var IDEA_TYPES = ['Medium', 'Sermon', 'Teaching', 'Bible study', 'Sync with Apple Notes'];
+var jotOff = 0;
+
+/* ---------- State ---------- */
+var db = null, canWrite = true, loadedApps = false;
+var dismissed = {}, customThreads = [], ideas = [], muted = ['paperpal'], mutedLoaded = false, advisors = [], qbs = [], craft = [], dbReading = [], readFlags = {}, playlist = '';
+var layout = null, headFont = 'raleway', tab = 'scholarship', ideaFilter = 'All';
+var openSet = {};
+var viewMode = 'default', focusId = '', hs = false, cvOn = false, cv = {}, zTop = 20;
+var busy = {};
+var dbFeed = [], collapsed = {}, curPane = '';
+var now = etNow();
+var mutedCount = 0;
+
+/* ---------- Helpers ---------- */
+function $(id) { return document.getElementById(id); }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null && text !== '') e.textContent = text; return e; }
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function note(msg) { var n = $('savenote'); n.textContent = msg || ''; n.hidden = !msg; }
+function safeUrl(u) { return /^https?:\/\//i.test(u || '') ? u : ''; }
+function link(label, url) { var a = el('a', null, label); a.href = url; a.target = '_blank'; a.rel = 'noopener'; return a; }
+function etNow() {
+var f = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' });
+var p = {}; f.formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+var wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[p.weekday];
+return { y: +p.year, m: +p.month, d: +p.day, dow: wd };
+}
+function isoOf(u) { return new Date(u).toISOString().slice(0, 10); }
+var TODAY_U = Date.UTC(now.y, now.m - 1, now.d);
+var WEEK_KEY = isoOf(Date.UTC(now.y, now.m - 1, now.d - now.dow));
+var DAYS_TO_RESET = 7 - now.dow;
+function daysSince(iso) { var p = iso.split('-'); return Math.round((TODAY_U - Date.UTC(+p[0], +p[1] - 1, +p[2])) / 86400000); }
+var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function fmt(iso) { var p = (iso || '').split('-'); return p.length === 3 ? MON[+p[1] - 1] + ' ' + (+p[2]) : ''; }
+function todayIso() { return isoOf(TODAY_U); }
+
+function isMuted(text) {
+var t = (text || '').toLowerCase();
+for (var i = 0; i < muted.length; i++) if (muted[i] && t.indexOf(muted[i].toLowerCase()) !== -1) return true;
+return false;
+}
+function threadText(t) { return [t.title, t.left, t.started, t.next, (t.links || []).map(function (l) { return l[0]; }).join(' ')].join(' ');}
+
+/* ---------- Writes ---------- */
+function guard(fn) {
+if (!db || !canWrite) return Promise.resolve(false);
+return Promise.resolve().then(fn).then(function () { note(''); return true; }).catch(function () {
+canWrite = false; note('Changes could not be saved in this view, so edits last only until you close the page.'); return false;
+});
+}
+function dSet(col, id, data) { return guard(function () { return db.collection(col).doc(id).set(data); }); }
+function dAdd(col, data) { return guard(function () { return db.collection(col).add(data); }); }
+function dDel(col, id) { return guard(function () { return db.collection(col).doc(id).delete(); }); }
+
+var toastTimer = null;
+function toast(msg, undo) {
+var t = $('toast'); t.textContent = '';
+t.appendChild(el('span', null, msg));
+if (undo) { var b = el('button', null, 'Undo'); b.type = 'button'; b.addEventListener('click', function () { undo(); t.hidden = true; }); t.appendChild(b); }
+t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 7000);
+}
+function removeBtn(label, fn) {
+var b = el('button', 'x', '×'); b.type = 'button'; b.setAttribute('aria-label', 'Remove ' + label);
+b.addEventListener('click', fn); return b;
+}
+function dismiss(key, label) {
+dismissed[key] = true; renderAll();
+dSet('dismissed', key, { at: new Date().toISOString() });
+toast('Removed “' + label + '”.', function () { delete dismissed[key]; dDel('dismissed', key); renderAll(); });
+}
+
+/* ---------- Threads ---------- */
+function allThreads() {
+var c = customThreads.map(function (c) { return { id: 'c-' + c.rid, rid: c.rid, area: c.area, title: c.title, when: c.created ? fmt(c.created.slice(0, 10)) : '', left: c.left, started: c.started, links: [], custom: true, raw: c }; });
+return THREADS.concat(c).filter(function (t) { return !dismissed['t:' + t.id] && !isMuted(threadText(t)); });
+}
+function trackOpen(d, key) {
+d.dataset.key = key; if (openSet[key]) d.open = true;
+d.addEventListener('toggle', function () { if (d.open) openSet[key] = 1; else delete openSet[key]; });
+}
+function defaultKeys() {
+var k = { 'band:active': 1 };
+var f = allThreads().filter(function (t) { return t.pri; })[0]; if (f) k['front:' + f.id] = 1;
+var w = allThreads().filter(function (t) { return t.area === 'workshop'; })[0]; if (w) k['ws:' + w.id] = 1;
+var n = 0; ARTIFACTS.forEach(function (g) { if (n < 2 && g.items.some(function (i) { return !dismissed['a:' + i[0]] && !isMuted(i[1]); })) { k['art:' + g.g] = 1; n++; } });
+return k;
+}
+function threadCard(t, ctx) {
+var wrap = el('div', 'thread-wrap');
+var d = el('details', 'thread'); var key = ctx + ':' + t.id;
+trackOpen(d, key);
+var s = el('summary'); s.appendChild(el('span', 'th-title', t.title)); if (t.when) s.appendChild(el('span', 'th-when', t.when));
+d.appendChild(s);
+var b = el('dl', 'th-body');
+[['Where you left off', t.left], ['How it started', t.started], ['Next move', t.next]].forEach(function (r) {
+if (!r[1]) return; var g = el('div'); g.appendChild(el('dt', null, r[0])); g.appendChild(el('dd', null, r[1])); b.appendChild(g);
+});
+if (t.links && t.links.length) {
+var l = el('div', 'th-links'); t.links.forEach(function (k) { l.appendChild(link(k[0] + ' ↗', k[1])); }); b.appendChild(l);
+}
+d.appendChild(b); wrap.appendChild(d);
+wrap.appendChild(removeBtn(t.title, function () {
+if (t.custom) {
+var raw = t.raw; customThreads = customThreads.filter(function (c) { return c.rid !== t.rid; }); renderAll();
+dDel('threads', t.rid);
+toast('Removed “' + t.title + '”.', function () { dSet('threads', t.rid, { area: raw.area, title: raw.title, left: raw.left || '', started: raw.started || '', created: raw.created || new Date().toISOString() }); });
+} else dismiss('t:' + t.id, t.title);
+}));
+return wrap;
+}
+function fillThreads(container, list, ctx, emptyMsg) {
+container.textContent = '';
+if (!list.length) { container.appendChild(el('p', 'empty', emptyMsg)); return; }
+list.forEach(function (t) { container.appendChild(threadCard(t, ctx)); });
+}
+function threadForm(area) {
+var det = el('details', 'addbox'); det.appendChild(el('summary', null, 'Add a thread'));
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+function field(label, tag, ph, req) {
+var l = el('label', null, label); var i = el(tag); if (tag === 'input') i.type = 'text'; i.placeholder = ph; if (req) i.required = true; l.appendChild(i); f.appendChild(l); return i;
+}
+var a = field('Title', 'input', 'What is this about?', true);
+var b = field('Where you left off', 'textarea', 'The last thing done or decided');
+var c = field('How it started', 'textarea', 'The prompt, and what you were trying to accomplish');
+var btn = el('button', 'pri', 'Save thread'); btn.type = 'submit'; btn.disabled = !db || !canWrite; btn.className = 'pri thread-save'; f.appendChild(btn);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); var title = a.value.trim(); if (!title) return;
+dAdd('threads', { area: area, title: title, left: b.value.trim(), started: c.value.trim(), created: new Date().toISOString() }).then(function (ok) { if (ok) { a.value = ''; b.value = ''; c.value = ''; det.open = false; } });
+});
+det.appendChild(f); return det;
+}
+
+/* ---------- Panes ---------- */
+function renderFront() {
+var b = $('b-front'); b.textContent = '';
+var lead = el('div', 'lead');
+lead.appendChild(el('div', 'kicker', 'Lead'));
+lead.appendChild(el('h3', null, "Verity's budget models are due this week, and the coat drive is four weeks out"));
+lead.appendChild(el('p', 'deck', 'Three ministry threads lead: the cash-flow models, the Nov 21 coat drive and the QuickBooks close. Each opens to where you left off and how it started.'));
+b.appendChild(lead);
+var list = el('div'); b.appendChild(list);
+fillThreads(list, allThreads().filter(function (t) { return t.pri; }), 'front', 'All lead threads are cleared.');
+}
+
+function weekPicks() {
+var out = [];
+if (READING.weekKey === WEEK_KEY) READING.picks.forEach(function (p, i) { out.push({ p: p, key: WEEK_KEY + '-' + i, src: 's', id: 'p:' + WEEK_KEY + '-' + i }); });
+dbReading.filter(function (p) { return p.weekKey === WEEK_KEY; }).sort(function (a, c) { return (a.created || '').localeCompare(c.created || ''); })
+.forEach(function (p) { out.push({ p: p, key: WEEK_KEY + '-d-' + p.id, src: 'd', id: p.id }); });
+return out.filter(function (x) { return x.src === 'd' || !dismissed[x.id]; });
+}
+function renderReading() {
+var b = $('b-reading'); b.textContent = '';
+var when = DAYS_TO_RESET === 1 ? 'tonight at midnight ET' : 'Saturday night at midnight ET, in ' + DAYS_TO_RESET + ' days';
+$('reading-note').textContent = 'New picks ' + when;
+var picks = weekPicks().filter(function (x) { return !isMuted((x.p.t || '') + ' ' + (x.p.au || '') + ' ' + (x.p.venue || '')); });
+b.appendChild(el('p', 'rhythm', 'Three to five pieces a week, matched to your dissertation questions. To change them: add a piece below, send me your Zotero export, or ask me in chat. A scheduled refresh can swap in new picks each Saturday night.'));
+if (!picks.length) b.appendChild(el('p', 'empty', "This week's picks have not been chosen yet. Add one below or ask me for a fresh set."));
+picks.forEach(function (x) {
+var p = x.p; var isRead = !!readFlags[x.key];
+var art = el('article', 'pick' + (isRead ? ' read' : ''));
+var h = el('h3'); h.appendChild(link(p.t || 'Untitled', safeUrl(p.url) || '#')); art.appendChild(h);
+var by = [p.au, p.yr, p.venue].filter(Boolean).join(' · '); if (by) art.appendChild(el('p', 'by', by));
+if (p.why) art.appendChild(el('p', 'why', p.why));
+var acts = el('div', 'acts');
+var rb = el('button', 'ghost', isRead ? 'Read ✓' : 'Mark read'); rb.type = 'button'; rb.setAttribute('aria-pressed', String(isRead));
+rb.addEventListener('click', function () {
+if (readFlags[x.key]) { delete readFlags[x.key]; dDel('readpicks', x.key); } else { readFlags[x.key] = true; dSet('readpicks', x.key, { read: true, at: new Date().toISOString() }); }
+renderReading(); renderWriting();
+});
+acts.appendChild(rb); art.appendChild(acts);
+art.appendChild(removeBtn(p.t || 'this piece', function () {
+if (x.src === 's') { dismiss(x.id, p.t); return; }
+var c = {}; for (var k in p) if (k !== 'id') c[k] = p[k];
+dDel('reading', x.id); toast('Removed “' + (p.t || 'piece') + '”.', function () { dSet('reading', x.id, c); });
+}));
+b.appendChild(art);
+});
+var det = el('details', 'addbox'); det.appendChild(el('summary', null, 'Add a piece to this week'));
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+function fld(label, tag, ph, req, type) { var l = el('label', null, label); var i = el(tag); if (tag === 'input') i.type = type || 'text'; i.placeholder = ph; if (req) i.required = true; l.appendChild(i); f.appendChild(l); return i; }
+var t1 = fld('Title', 'input', 'Article, chapter or book', true), a1 = fld('Author or authors', 'input', 'Last name, first initial'), v1 = fld('Year and venue', 'input', '2024, Journal or publisher'), u1 = fld('Link', 'input', 'https://', false, 'url'), w1 = fld('Why it fits', 'textarea', 'One line on how it serves your work');
+var sb = el('button', 'pri', 'Add piece'); sb.type = 'submit'; sb.disabled = !db || !canWrite; f.appendChild(sb);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); var t = t1.value.trim(); if (!t) return;
+dAdd('reading', { weekKey: WEEK_KEY, t: t, au: a1.value.trim(), yr: '', venue: v1.value.trim(), url: safeUrl(u1.value.trim()), why: w1.value.trim(), spark: '', created: new Date().toISOString() }).then(function (ok) { if (ok) { toast('Added to this week’s reading.'); } });
+});
+det.appendChild(f); b.appendChild(det);
+}
+
+function repoRow(r) {
+var wrap = el('div', 'repo-wrap');
+var top = el('div', 'repo-top');
+var a = link(r.n, 'https://github.com/hjs-ah/' + r.n); a.className = 'repo-name'; top.appendChild(a);
+if (r.priv) top.appendChild(el('span', 'chip acc', 'Private'));
+top.appendChild(el('span', 'chip', r.fam));
+wrap.appendChild(top);
+var d = daysSince(r.d);
+wrap.appendChild(el('div', 'repo-meta', 'Pushed ' + fmt(r.d) + ' · ' + (d <= 0 ? 'today' : d + ' days ago')));
+var lk = el('div', 'repo-links');
+lk.appendChild(link('GitHub ↗', 'https://github.com/hjs-ah/' + r.n));
+if (r.live) lk.appendChild(link('Live ↗', 'https://' + r.live)); else lk.appendChild(el('span', 'nolive', 'No Vercel domain'));
+(r.notion || []).forEach(function (n) { lk.appendChild(link(n[0] + ' ↗', NOTION(n[1]))); });
+wrap.appendChild(lk);
+if (r.desc) wrap.appendChild(el('p', 'repo-desc', r.desc));
+wrap.appendChild(removeBtn(r.n, function () { dismiss('r:' + r.n, r.n); }));
+return wrap;
+}
+function renderWorkshop() {
+var b = $('b-workshop'); b.textContent = '';
+var wt = allThreads().filter(function (t) { return t.area === 'workshop'; });
+if (wt.length) { var tl = el('div'); b.appendChild(tl); fillThreads(tl, wt, 'ws', ''); }
+var bands = { active: [], recent: [], quiet: [] };
+var visible = REPOS.filter(function (r) { return !dismissed['r:' + r.n]; });
+visible.forEach(function (r) { var d = daysSince(r.d); bands[d <= 30 ? 'active' : d <= 150 ? 'recent' : 'quiet'].push(r); });
+[['active', 'Active', 'pushed in the last 30 days', 'ok'], ['recent', 'Recent', '30 to 150 days', 'warn'], ['quiet', 'Quiet', 'older than 150 days', '']].forEach(function (x) {
+var list = bands[x[0]]; var key = 'band:' + x[0];
+var det = el('details', 'band'); trackOpen(det, key);
+var s = el('summary'); s.appendChild(el('span', 'chip ' + x[3], x[1] + ' ' + list.length)); s.appendChild(el('span', 'repo-meta', x[2])); det.appendChild(s);
+if (!list.length) det.appendChild(el('p', 'empty', 'Nothing here.')); else list.forEach(function (r) { det.appendChild(repoRow(r)); });
+b.appendChild(det);
+});
+$('s-repos').textContent = bands.active.length;
+}
+
+function renderArtifacts() {
+var b = $('b-artifacts'); b.textContent = '';
+b.appendChild(el('p', 'rhythm', "Grouped by what you use them for, newest first. I can see when each was updated but not how often you open it, so tell me which to pin."));
+ARTIFACTS.forEach(function (g) {
+var items = g.items.filter(function (i) { return !dismissed['a:' + i[0]] && !isMuted(i[1]); });
+if (!items.length) return;
+var grp = el('details', 'band art-group'); trackOpen(grp, 'art:' + g.g);
+var sm = el('summary'); sm.appendChild(el('span', 'chip', g.g + ' ' + items.length)); grp.appendChild(sm);
+items.forEach(function (i) {
+var row = el('div', 'art'); row.appendChild(link(i[1], i[2])); if (i[3]) row.appendChild(el('span', null, i[3]));
+row.appendChild(removeBtn(i[1], function () { dismiss('a:' + i[0], i[1]); })); grp.appendChild(row);
+});
+b.appendChild(grp);
+});
+}
+
+/* Desk (tabs) */
+function buildTabs() {
+var bar = $('tabs'); bar.textContent = '';
+TABS.forEach(function (t, idx) {
+var bt = el('button', 'tab', t[1]); bt.type = 'button'; bt.setAttribute('role', 'tab'); bt.id = 'tab-' + t[0];
+bt.setAttribute('aria-selected', String(tab === t[0])); bt.tabIndex = tab === t[0] ? 0 : -1; bt.setAttribute('aria-controls', 'b-desk');
+bt.addEventListener('click', function () { setTab(t[0]); });
+bt.addEventListener('keydown', function (ev) {
+var n = null;
+if (ev.key === 'ArrowRight') n = (idx + 1) % TABS.length; else if (ev.key === 'ArrowLeft') n = (idx + TABS.length - 1) % TABS.length;
+else if (ev.key === 'Home') n = 0; else if (ev.key === 'End') n = TABS.length - 1;
+if (n != null) { ev.preventDefault(); setTab(TABS[n][0]); $('tab-' + TABS[n][0]).focus(); }
+});
+bar.appendChild(bt);
+});
+}
+function setTab(id) { tab = id; lsSet('hd-tab', id); foldPane('desk', false); buildTabs(); renderDesk(); }
+
+function renderDesk() {
+var b = $('b-desk'); b.textContent = ''; b.setAttribute('aria-labelledby', 'tab-' + tab);
+var areaList = allThreads().filter(function (t) { return t.area === tab; });
+if (tab === 'scholarship') {
+b.appendChild(el('h3', 'sub-h', 'The PhD'));
+var f = el('ul', 'facts');
+[['Status.', 'Hampton University School of Religion, Public Theology and Community Engagement. Still in coursework; comprehensive exams not yet taken.'],
+['Working title.', 'Abandoned at the Threshold: Black Congregations, Societal Stewardship, and the Intergenerational Formation Crisis Among Black Boys in Philadelphia'],
+['Framework.', 'SIAD: Stewardship, Incarnation, Activism, Discipleship. Method: qualitative-dominant mixed methods, with VOW Center as the primary site.']].forEach(function (x) {
+var li = el('li'); li.appendChild(el('b', null, x[0] + ' ')); li.appendChild(document.createTextNode(x[1])); f.appendChild(li);
+});
+var lk = el('li'); lk.appendChild(el('b', null, 'In Notion. ')); lk.appendChild(link('Dissertation Hub', HUB)); lk.appendChild(document.createTextNode(' · ')); lk.appendChild(link('Chapter Tracker', TRACKER)); f.appendChild(lk);
+b.appendChild(f);
+}
+if (tab === 'ministry') renderMinistryExtras(b);
+if (tab === 'home') {
+b.appendChild(el('h3', 'sub-h', 'On the calendar'));
+b.appendChild(el('p', null, 'Nothing is scheduled from Oct 26 through Nov 8 on the Google Calendar I can see. If family and community plans live somewhere else, name the place and I will read it.'));
+}
+if (tab === 'development') renderAdvisors(b);
+b.appendChild(el('h3', 'sub-h', tab === 'development' ? 'Growth threads' : 'Threads'));
+var tl = el('div'); b.appendChild(tl);
+fillThreads(tl, areaList, 'desk', 'No open threads here. Add one below.');
+b.appendChild(threadForm(tab));
+}
+
+function renderMinistryExtras(b) {
+b.appendChild(el('h3', 'sub-h', 'QuickBooks updates'));
+b.appendChild(el('p', 'rhythm', 'Log what changed in the books after each close or cleanup. Newest first.'));
+var f = el('form', 'rowform'); f.autocomplete = 'off'; f.id = 'qbform';
+var l1 = el('label', null, 'Update'); var i1 = el('input'); i1.type = 'text'; i1.placeholder = 'What changed in QuickBooks?'; i1.required = true; l1.appendChild(i1);
+var l2 = el('label', null, 'Date'); var i2 = el('input'); i2.type = 'date'; i2.value = todayIso(); l2.appendChild(i2);
+var bt = el('button', 'pri', 'Log update'); bt.type = 'submit'; bt.disabled = !db || !canWrite;
+f.appendChild(l1); f.appendChild(l2); f.appendChild(bt);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); var text = i1.value.trim(); if (!text) return;
+dAdd('qbupdates', { text: text, date: i2.value || todayIso(), created: new Date().toISOString() }).then(function (ok) { if (ok) i1.value = ''; });
+});
+b.appendChild(f);
+var list = qbs.slice().sort(function (a, c) { return (c.date || '').localeCompare(a.date || '') || (c.created || '').localeCompare(a.created || ''); });
+if (!list.length) b.appendChild(el('p', 'empty', db ? 'No updates logged yet.' : 'Updates you log are saved when this page is opened in Claude.'));
+list.forEach(function (q) {
+var row = el('div', 'qb-entry'); row.appendChild(el('span', 'd', fmt(q.date))); row.appendChild(el('span', null, q.text));
+row.appendChild(removeBtn('this update', function () { dDel('qbupdates', q.id); toast('Update removed.', function () { dSet('qbupdates', q.id, { text: q.text, date: q.date, created: q.created }); }); }));
+b.appendChild(row);
+});
+b.appendChild(el('h3', 'sub-h', 'Programs'));
+var u = el('ul', 'facts');
+[["Chess Not Checkers.", "Men's cohort with Endgame and Cornerstone tracks."], ['iThirst.', 'Street evangelism and the water donations tracker.'], ["Builder's Conference and Financial Literacy.", 'Long-running VOW programs.'], ['501(c)(3) for Verity.', 'A project folder exists; status not in my notes.']].forEach(function (x) {
+var li = el('li'); li.appendChild(el('b', null, x[0] + ' ')); li.appendChild(document.createTextNode(x[1])); u.appendChild(li);
+});
+b.appendChild(u);
+}
+
+function renderAdvisors(b) {
+b.appendChild(el('h3', 'sub-h', 'Mentors and advisors'));
+b.appendChild(el('p', 'rhythm', 'People you go to for counsel. Record where each relationship stands so it does not go quiet. For the dissertation, Hampton guidance is a chair plus three members, including a methodologist.'));
+var list = advisors.slice().sort(function (a, c) { return (a.created || '').localeCompare(c.created || ''); });
+if (!list.length) b.appendChild(el('p', 'empty', db ? 'No advisors added yet.' : 'Advisors you add are saved when this page is opened in Claude.'));
+list.forEach(function (a) {
+var card = el('div', 'advisor'); card.appendChild(el('h4', null, a.name)); if (a.role) card.appendChild(el('div', 'role', a.role));
+if (a.started) { var s = el('div'); s.appendChild(el('span', 'sub-h', 'How it started')); s.appendChild(el('p', null, a.started)); card.appendChild(s); }
+var lab = el('label'); lab.appendChild(el('span', 'sub-h', 'Where it stands'));
+var ta = el('textarea'); ta.value = a.stands || ''; ta.disabled = !db || !canWrite; ta.setAttribute('aria-label', 'Where it stands with ' + a.name);
+ta.addEventListener('change', function () { dSet('advisors', a.id, { name: a.name, role: a.role || '', started: a.started || '', stands: ta.value.trim(), created: a.created || new Date().toISOString() }); });
+lab.appendChild(ta); card.appendChild(lab);
+card.appendChild(removeBtn(a.name, function () { dDel('advisors', a.id); toast('Removed ' + a.name + '.', function () { dSet('advisors', a.id, { name: a.name, role: a.role || '', started: a.started || '', stands: a.stands || '', created: a.created }); }); }));
+b.appendChild(card);
+});
+var det = el('details', 'addbox'); det.appendChild(el('summary', null, 'Add an advisor'));
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+function fld(label, tag, ph, req) { var l = el('label', null, label); var i = el(tag); if (tag === 'input') i.type = 'text'; i.placeholder = ph; if (req) i.required = true; l.appendChild(i); f.appendChild(l); return i; }
+var n = fld('Name', 'input', 'Dr. Name', true), r = fld('Role or place', 'input', 'Where they sit and what they advise on'), s2 = fld('How it started', 'textarea', 'How you met or what you asked'), st = fld('Where it stands', 'textarea', 'The last conversation or next step');
+var bt = el('button', 'pri', 'Add advisor'); bt.type = 'submit'; bt.disabled = !db || !canWrite; f.appendChild(bt);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); if (!n.value.trim()) return;
+dAdd('advisors', { name: n.value.trim(), role: r.value.trim(), started: s2.value.trim(), stands: st.value.trim(), created: new Date().toISOString() }).then(function (ok) { if (ok) det.open = false; });
+});
+det.appendChild(f); b.appendChild(det);
+}
+
+/* Career desk: skills, tools, frontends, portfolio and certs */
+var CRAFT_CATS = [['Skill', 'Skills'], ['Tool', 'Tools'], ['Frontend', 'Frontends I built'], ['Portfolio', 'Portfolio pieces'], ['Cert', 'Certs and credentials'], ['Note', 'Other context']];
+function renderCareer() {
+var b = $('b-career'); b.textContent = '';
+var vis = craft.filter(function (c) { return !isMuted((c.title || '') + ' ' + (c.context || '')); });
+$('s-craft').textContent = vis.length;
+b.appendChild(el('p', 'rhythm', 'Log what you learn, build, publish or look into. Whatever you log stays here and carries into each week’s digest until you remove it.'));
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+var row = el('div', 'rowform');
+var l0 = el('label', null, 'What is it'); var ct = el('select'); CRAFT_CATS.forEach(function (c) { var o = el('option', null, c[0] === 'Cert' ? 'Cert or credential' : c[0]); o.value = c[0]; ct.appendChild(o); }); l0.appendChild(ct); row.appendChild(l0);
+var l1 = el('label', null, 'Title'); var ti = el('input'); ti.type = 'text'; ti.required = true; ti.placeholder = 'Name of the skill, tool, build or cert'; l1.appendChild(ti); row.appendChild(l1);
+f.appendChild(row);
+var l2 = el('label', null, 'Context'); var cx = el('textarea'); cx.placeholder = 'Where it stands, why it matters, what you want to do with it'; l2.appendChild(cx); f.appendChild(l2);
+var l3 = el('label', null, 'Link (optional)'); var ln = el('input'); ln.type = 'url'; ln.placeholder = 'https://'; l3.appendChild(ln); f.appendChild(l3);
+var bt = el('button', 'pri', 'Log it'); bt.type = 'submit'; bt.disabled = !db || !canWrite; f.appendChild(bt);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); var t = ti.value.trim(); if (!t) return;
+dAdd('craft', { cat: ct.value, title: t, context: cx.value.trim(), link: safeUrl(ln.value.trim()), created: new Date().toISOString() }).then(function (ok) { if (ok) { ti.value = ''; cx.value = ''; ln.value = ''; toast('Logged. It will carry into next week’s digest.'); } });
+});
+b.appendChild(f);
+var fresh = vis.filter(function (c) { return (c.created || '').slice(0, 10) >= WEEK_KEY; }).length;
+b.appendChild(el('p', 'craft-sum', fresh + ' new this week · ' + (vis.length - fresh) + ' carried forward'));
+var live = REPOS.filter(function (r) { return r.live && !dismissed['r:' + r.n]; }).sort(function (a, c) { return c.d.localeCompare(a.d); });
+CRAFT_CATS.forEach(function (c) {
+var list = vis.filter(function (x) { return (x.cat || 'Note') === c[0]; }).sort(function (a, d) { return (d.created || '').localeCompare(a.created || ''); });
+var extra = c[0] === 'Frontend' ? live.length : 0;
+var det = el('details', 'band'); trackOpen(det, 'craft:' + c[0]);
+var sm = el('summary'); sm.appendChild(el('span', 'chip', c[1] + ' ' + (list.length + extra))); det.appendChild(sm);
+if (!list.length && !extra) det.appendChild(el('p', 'empty', 'Nothing logged yet.'));
+list.forEach(function (x) {
+var ent = el('div', 'craft-entry'); var h = el('div', 'ce-head'); var nm = el('b');
+if (safeUrl(x.link)) nm.appendChild(link(x.title || '', x.link)); else nm.textContent = x.title || '';
+h.appendChild(nm);
+var isNew = (x.created || '').slice(0, 10) >= WEEK_KEY;
+h.appendChild(el('span', 'chip ' + (isNew ? 'ok' : ''), isNew ? 'New this week' : 'Carried from ' + fmt((x.created || '').slice(0, 10))));
+ent.appendChild(h);
+if (x.context) ent.appendChild(el('p', null, x.context));
+ent.appendChild(removeBtn(x.title || 'this entry', function () {
+var cp = {}; for (var k in x) if (k !== 'id') cp[k] = x[k];
+dDel('craft', x.id); toast('Removed “' + (x.title || 'entry') + '”.', function () { dSet('craft', x.id, cp); });
+}));
+det.appendChild(ent);
+});
+if (extra) {
+det.appendChild(el('h3', 'sub-h', 'Live on Vercel, from your repos'));
+live.forEach(function (r) {
+var rw = el('div', 'art'); rw.appendChild(link(r.n, 'https://' + r.live)); rw.appendChild(el('span', null, 'Pushed ' + fmt(r.d))); det.appendChild(rw);
+});
+}
+b.appendChild(det);
+});
+}
+
+/* Writing */
+function renderWriting() {
+var b = $('b-writing'); b.textContent = '';
+var picks = weekPicks(); var spark = null;
+for (var i = 0; i < picks.length; i++) if (!readFlags[picks[i].key] && picks[i].p.spark) { spark = picks[i].p; break; }
+if (spark) { var sp = el('div', 'spark'); sp.appendChild(el('b', null, 'This week’s spark. ')); sp.appendChild(document.createTextNode(spark.spark)); b.appendChild(sp); }
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+var row = el('div', 'rowform');
+var l0 = el('label', null, 'Piece type'); var ty = el('select'); IDEA_TYPES.forEach(function (t) { var o = el('option', null, t); o.value = t; ty.appendChild(o); }); l0.appendChild(ty); row.appendChild(l0);
+var l2 = el('label', null, 'Source or inspiration'); var sc = el('input'); sc.type = 'text'; sc.placeholder = 'A link, a verse, a conversation'; l2.appendChild(sc); row.appendChild(l2);
+f.appendChild(row);
+var l1 = el('label', null, 'What is on your mind'); var tx = el('textarea'); tx.placeholder = 'An idea, a line, a question, a scene'; tx.required = true; l1.appendChild(tx); f.appendChild(l1);
+var bt = el('button', 'pri', 'Save idea'); bt.type = 'submit'; bt.disabled = !db || !canWrite; f.appendChild(bt);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); var t = tx.value.trim(); if (!t) return;
+var type = ty.value;
+dAdd('ideas', { type: type, text: t, source: sc.value.trim(), created: new Date().toISOString() }).then(function (ok) {
+if (ok) { ideaFilter = 'All'; toast('Saved to ' + type + ' ideas.'); renderWriting(); }
+});
+});
+b.appendChild(f);
+var shown = ideas.filter(function (i) { return ideaFilter === 'All' || i.type === ideaFilter; });
+var head = el('div'); head.style.marginTop = '14px';
+head.appendChild(el('h3', 'sub-h', 'Saved ideas (' + shown.length + (ideaFilter === 'All' ? '' : ' in ' + ideaFilter) + ')'));
+var fl = el('div', 'pipe'); fl.setAttribute('role', 'group'); fl.setAttribute('aria-label', 'Filter ideas');
+['All'].concat(IDEA_TYPES).forEach(function (t) {
+var c = el('button', 'ghost', t); c.type = 'button'; c.setAttribute('aria-pressed', String(ideaFilter === t)); if (ideaFilter === t) c.style.background = 'var(--tab)';
+c.addEventListener('click', function () { ideaFilter = t; renderWriting(); }); fl.appendChild(c);
+});
+head.appendChild(fl); b.appendChild(head);
+var list = shown.slice().sort(function (a, c) { return (c.created || '').localeCompare(a.created || ''); });
+if (!list.length) b.appendChild(el('p', 'empty', db ? 'Nothing here yet. Whatever you drop in becomes raw material for Medium pieces, sermons and lessons.' : 'Ideas you save appear here when this page is opened in Claude.'));
+list.forEach(function (i) {
+var card = el('div', 'idea'); card.appendChild(el('p', null, i.text));
+var m = el('div', 'm'); m.appendChild(el('span', 'chip acc', i.type || 'General'));
+if (i.type === 'Sync with Apple Notes') m.appendChild(el('span', 'chip ' + (i.synced ? 'ok' : 'warn'), i.synced ? 'In Apple Notes' : 'Queued for Apple Notes'));
+if (i.source) { if (safeUrl(i.source)) m.appendChild(link(i.source.replace(/^https?:\/\//, '').slice(0, 48), i.source)); else m.appendChild(el('span', null, i.source)); }
+if (i.created) m.appendChild(el('span', null, fmt(i.created.slice(0, 10))));
+card.appendChild(m);
+var act = el('div', 'idea-actions');
+var sel = el('select'); sel.setAttribute('aria-label', 'Add as a thread in'); TABS.forEach(function (t) { var o = el('option', null, t[1]); o.value = t[0]; sel.appendChild(o); });
+var mk = el('button', 'ghost', 'Make it a thread'); mk.type = 'button'; mk.disabled = !db || !canWrite;
+mk.addEventListener('click', function () {
+var title = i.text.split(/[.!?\n]/)[0].trim().slice(0, 80) || 'New thread';
+dAdd('threads', { area: sel.value, title: title, left: '', started: i.text, created: new Date().toISOString() }).then(function (ok) { if (ok) toast('Added to ' + sel.options[sel.selectedIndex].text + ' threads.'); });
+});
+act.appendChild(sel); act.appendChild(mk); card.appendChild(act);
+card.appendChild(removeBtn('this idea', function () { var c = { type: i.type, text: i.text, source: i.source || '', created: i.created }; dDel('ideas', i.id); toast('Idea removed.', function () { dSet('ideas', i.id, c); }); }));
+b.appendChild(card);
+});
+}
+
+/* Playlist */
+function ytId(v) { v = (v || '').trim(); if (!v) return ''; var m = v.match(/[?&]list=([A-Za-z0-9_-]{10,})/); if (m) return m[1]; return /^[A-Za-z0-9_-]{10,}$/.test(v) ? v : ''; }
+function savePlaylist(id) { playlist = id; lsSet('hd-playlist', id); dSet('prefs', 'playlist', { list: id, updated: new Date().toISOString() }); renderPlaylist(); }
+function renderPlaylist() {
+var b = $('b-playlist'); b.textContent = '';
+if (playlist) {
+var wrap = el('div', 'yt'); var fr = el('iframe');
+fr.src = 'https://www.youtube-nocookie.com/embed/videoseries?list=' + encodeURIComponent(playlist);
+fr.title = 'YouTube playlist'; fr.loading = 'lazy'; fr.referrerPolicy = 'strict-origin-when-cross-origin';
+fr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'); fr.setAttribute('allowfullscreen', '');
+wrap.appendChild(fr); b.appendChild(wrap);
+var r = el('div', 'yt-row');
+var ob = link('Open on YouTube ↗', 'https://www.youtube.com/playlist?list=' + encodeURIComponent(playlist)); ob.className = 'linkbtn'; r.appendChild(ob);
+var rm = el('button', 'ghost', 'Remove playlist'); rm.type = 'button'; rm.addEventListener('click', function () { var old = playlist; savePlaylist(''); toast('Playlist removed.', function () { savePlaylist(old); }); }); r.appendChild(rm);
+b.appendChild(r);
+b.appendChild(el('p', 'repo-meta', 'If the player stays blank here, YouTube or this page is blocking the frame. Use the link above.'));
+} else b.appendChild(el('p', 'empty', 'Paste a YouTube playlist link and it plays right here.'));
+var det = el('details', 'addbox'); det.open = !playlist; det.appendChild(el('summary', null, playlist ? 'Change playlist' : 'Add a playlist'));
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+var l = el('label', null, 'Playlist link'); var i = el('input'); i.type = 'text'; i.placeholder = 'https://www.youtube.com/playlist?list=...'; i.required = true; l.appendChild(i); f.appendChild(l);
+var er = el('p', 'repo-meta'); er.hidden = true; f.appendChild(er);
+var sb = el('button', 'pri', 'Save playlist'); sb.type = 'submit'; f.appendChild(sb);
+f.addEventListener('submit', function (ev) { ev.preventDefault(); var id = ytId(i.value); if (!id) { er.hidden = false; er.textContent = 'That does not look like a playlist link. It should contain list= followed by the playlist ID.'; return; } savePlaylist(id); });
+det.appendChild(f); b.appendChild(det);
+}
+
+/* Design feed */
+var STARTERS = [['Branding', 'branding identity'], ['Editorial', 'editorial layout'], ['UI and UX', 'ui ux case study'], ['Posters', 'poster design']];
+function renderDesign() {
+var b = $('b-design'); b.textContent = '';
+var items = dbFeed.filter(function (d) { return !isMuted((d.title || '') + ' ' + (d.url || '')); }).sort(function (a, c) { return (c.created || '').localeCompare(a.created || ''); }).slice(0, 4);
+var grid = el('div', 'design-grid');
+items.forEach(function (d) {
+var t = el('div', 'tile'); var a = el('a', 'thumb'); a.href = safeUrl(d.url) || '#'; a.target = '_blank'; a.rel = 'noopener';
+var ph = function () { a.textContent = ''; var p = el('div', 'ph'); p.appendChild(document.createTextNode(d.title || 'Design')); a.appendChild(p); };
+ph();
+t.appendChild(a);
+t.appendChild(removeBtn(d.title || 'this design', function () { var c = {}; for (var k in d) if (k !== 'id') c[k] = d[k]; dDel('feed', d.id); toast('Removed.', function () { dSet('feed', d.id, c); }); }));
+grid.appendChild(t);
+});
+for (var i = items.length; i < 4; i++) {
+var st = STARTERS[i]; var t2 = el('div', 'tile'); var a2 = el('a', 'thumb'); a2.href = 'https://www.behance.net/search/projects?search=' + encodeURIComponent(st[1]); a2.target = '_blank'; a2.rel = 'noopener';
+var p2 = el('div', 'ph'); p2.appendChild(document.createTextNode(st[0])); p2.appendChild(el('small', null, 'Search on Behance')); a2.appendChild(p2); t2.appendChild(a2); grid.appendChild(t2);
+}
+b.appendChild(grid);
+var row = el('div'); row.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:12px';
+var ob = link('Open your Behance feed ↗', 'https://www.behance.net/'); ob.className = 'linkbtn'; row.appendChild(ob);
+row.appendChild(el('span', 'repo-meta', 'Behance has no feed for personal home pages, so these tiles are curated. Paste a design below, or ask me to refresh them from your signed-in Behance.'));
+b.appendChild(row);
+var det = el('details', 'addbox'); det.appendChild(el('summary', null, 'Add a design'));
+var f = el('form', 'stackform'); f.autocomplete = 'off';
+function fld(label, ph, req, type) { var l = el('label', null, label); var i = el('input'); i.type = type || 'text'; i.placeholder = ph; if (req) i.required = true; l.appendChild(i); f.appendChild(l); return i; }
+var ti = fld('Title', 'Project name', true), pg = fld('Page link', 'https://www.behance.net/gallery/...', true, 'url');
+var sb = el('button', 'pri', 'Add design'); sb.type = 'submit'; sb.disabled = !db || !canWrite; f.appendChild(sb);
+f.addEventListener('submit', function (ev) {
+ev.preventDefault(); if (!ti.value.trim() || !safeUrl(pg.value.trim())) return;
+dAdd('feed', { title: ti.value.trim(), url: safeUrl(pg.value.trim()), created: new Date().toISOString() }).then(function (ok) { if (ok) { ti.value = ''; pg.value = ''; det.open = false; } });
+});
+det.appendChild(f); b.appendChild(det);
+}
+
+/* Goals */
+function renderGoals() {
+var b = $('b-goals'); b.textContent = '';
+var wrap = el('div', 'two-col');
+var c1 = el('div'); c1.appendChild(el('h3', 'sub-h', 'Goals you have shared'));
+GOALS.filter(function (g) { return !dismissed['g:' + g[0]]; }).forEach(function (g) {
+var r = el('div', 'goalrow'); r.appendChild(el('b', null, g[1])); r.appendChild(el('span', g[3] ? 'dated' : '', g[2]));
+r.appendChild(removeBtn(g[1], function () { dismiss('g:' + g[0], g[1]); })); c1.appendChild(r);
+});
+var c2 = el('div'); c2.appendChild(el('h3', 'sub-h', 'Loose ends: possibly unfinished'));
+UNFINISHED.filter(function (u) { return !dismissed['g:' + u[0]]; }).forEach(function (u) {
+var r = el('div', 'goalrow'); r.appendChild(el('b', null, u[1])); r.appendChild(el('span', null, u[2]));
+r.appendChild(removeBtn(u[1], function () { dismiss('g:' + u[0], u[1]); })); c2.appendChild(r);
+});
+wrap.appendChild(c1); wrap.appendChild(c2);
+var jb = el('div'); jb.appendChild(el('h3', 'sub-h', 'Recent jots'));
+var startU = Date.UTC(now.y, now.m - 1, now.d - now.dow - 7 * jotOff), startIso = isoOf(startU), endIso = isoOf(startU + 6 * 86400000);
+var nav = el('div', 'jot-nav');
+var pb = el('button', 'ghost', '\u2039 Earlier'); pb.type = 'button'; pb.setAttribute('aria-label', 'Show the previous week of jots');
+pb.addEventListener('click', function () { jotOff++; renderGoals(); });
+var nb = el('button', 'ghost', 'Later \u203a'); nb.type = 'button'; nb.disabled = jotOff === 0; nb.setAttribute('aria-label', 'Show the next week of jots');
+nb.addEventListener('click', function () { jotOff = Math.max(0, jotOff - 1); renderGoals(); });
+nav.appendChild(pb); nav.appendChild(el('span', 'wk', fmt(startIso) + ' to ' + fmt(endIso) + (jotOff === 0 ? ' \u00b7 this week' : ''))); nav.appendChild(nb);
+jb.appendChild(nav);
+function okJot(j) { return !dismissed['j:' + j.id] && !JOT_BLOCK.test(j.title) && !isMuted(j.title + ' ' + j.summary); }
+function jotRow(j) {
+var r = el('div', 'goalrow'); r.appendChild(el('b', null, j.title));
+r.appendChild(el('span', null, 'Created ' + fmt(j.created) + (j.edited ? ' \u00b7 edited ' + fmt(j.edited) : '')));
+r.appendChild(el('p', 'jot-sum', j.summary));
+r.appendChild(removeBtn(j.title, function () { dismiss('j:' + j.id, j.title); })); return r;
+}
+var covered = endIso >= JOTS.from;
+var fresh = jotOff > 0 || daysSince(JOTS.pulled) <= 7;
+var wkItems = (covered && fresh) ? JOTS.items.filter(function (j) { return j.created >= startIso && j.created <= endIso && okJot(j); }).sort(function (a, c) { return c.created.localeCompare(a.created); }) : [];
+if (!covered) jb.appendChild(el('p', 'repo-meta', 'Nothing pulled for this week yet. Ask me to pull earlier weeks.'));
+else if (!fresh) jb.appendChild(el('p', 'repo-meta', 'Not refreshed this week. Ask me to pull this week\u2019s Apple Notes.'));
+else {
+jb.appendChild(el('p', 'repo-meta', 'From Apple Notes, by the date each was created. Pulled ' + fmt(JOTS.pulled) + '.'));
+if (!wkItems.length) jb.appendChild(el('p', 'empty', 'No notes created this week.'));
+}
+wkItems.forEach(function (j) { jb.appendChild(jotRow(j)); });
+if (jotOff === 0 && fresh) {
+var last3 = JOTS.items.filter(function (j) { return j.created < startIso && okJot(j); }).sort(function (a, c) { return c.created.localeCompare(a.created); }).slice(0, 3);
+if (last3.length) { jb.appendChild(el('h4', 'jot-sub', 'Before this week: the last three')); last3.forEach(function (j) { jb.appendChild(jotRow(j)); }); }
+}
+wrap.appendChild(jb); b.appendChild(wrap);
+}
+
+function renderStats() {
+$('s-open').textContent = allThreads().length;
+var dd = Math.round((Date.UTC(now.y, 11, 31) - TODAY_U) / 86400000);
+$('s-days').textContent = dd; $('s-days-l').textContent = 'Days to Dec 31';
+var n = 0;
+THREADS.forEach(function (t) { if (isMuted(threadText(t))) n++; });
+mutedCount = n;
+$('mutenote').textContent = muted.length ? 'Muted keywords: ' + muted.join(', ') + (n ? '. ' + n + ' item' + (n === 1 ? '' : 's') + ' hidden by them.' : '. Nothing on this page matches them right now.') : 'No muted keywords. Add some under Layout to hide matching items.';
+}
+function renderJump() {
+var j = $('jump'); j.textContent = '';
+['front'].forEach(function (id) {
+var short = id; PANES.forEach(function (p) { if (p[0] === id) short = p[2]; });
+var a = el('a', null, short); a.href = '#pane-' + id; a.dataset.id = id; if (curPane === id) a.setAttribute('aria-current', 'true');
+a.addEventListener('click', function (ev) { ev.preventDefault(); goPane(id); }); j.appendChild(a);
+});
+}
+function setCurrent(id) {
+curPane = id; var cur = null;
+document.querySelectorAll('#jump a').forEach(function (a) { if (a.dataset.id === id) { a.setAttribute('aria-current', 'true'); cur = a; } else a.removeAttribute('aria-current'); });
+var j = $('jump'); if (cur && j.scrollWidth > j.clientWidth + 2) j.scrollLeft = Math.max(0, cur.offsetLeft - 24);
+}
+function renderAll() {
+renderFront(); renderReading(); renderWorkshop(); renderArtifacts(); buildTabs(); renderDesk(); renderDesign(); renderCareer(); renderWriting(); renderPlaylist(); renderGoals(); renderStats();
+}
+
+/* ---------- Layout ---------- */
+function titleOf(id) { for (var i = 0; i < PANES.length; i++) if (PANES[i][0] === id) return PANES[i][1]; return id; }
+function validLayout(l) {
+var out = { left: [], right: [], wide: [] }, seen = {};
+['left', 'right', 'wide'].forEach(function (z) {
+((l && l[z]) || []).forEach(function (id) { if (!seen[id] && PANES.some(function (p) { return p[0] === id; })) { seen[id] = 1; out[z].push(id); } });
+});
+PANES.forEach(function (p) { if (!seen[p[0]]) { var z = DEFAULT_LAYOUT.left.indexOf(p[0]) > -1 ? 'left' : DEFAULT_LAYOUT.right.indexOf(p[0]) > -1 ? 'right' : 'wide'; out[z].push(p[0]); } });
+return out;
+}
+function flatOrder() { return layout.left.concat(layout.right, layout.wide); }
+function applyLayout() {
+['left', 'right', 'wide'].forEach(function (z) { var zone = $('zone-' + z); layout[z].forEach(function (id) { zone.appendChild($('pane-' + id)); }); });
+renderJump();
+}
+function saveLayout() {
+lsSet('hd-layout', JSON.stringify(layout));
+dSet('prefs', 'layout', { left: layout.left, right: layout.right, wide: layout.wide });
+}
+function moveTo(id, zone, idx) {
+['left', 'right', 'wide'].forEach(function (z) { layout[z] = layout[z].filter(function (x) { return x !== id; }); });
+if (idx == null || idx > layout[zone].length) idx = layout[zone].length;
+layout[zone].splice(Math.max(0, idx), 0, id);
+applyLayout(); saveLayout(); buildOverlay();
+}
+function goPane(id) {
+closeOverlay(); if (focusId) exitFocus(); foldPane(id, false);
+var p = $('pane-' + id); if (!p) return;
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var beh = reduce ? 'auto' : 'smooth';
+if (hs) {
+var g = $('grid');
+window.scrollTo({ top: Math.max(0, g.getBoundingClientRect().top + window.pageYOffset - $('bar').offsetHeight - 8), behavior: beh });
+g.scrollTo({ left: p.offsetLeft, behavior: beh });
+} else p.scrollIntoView({ behavior: beh, block: 'start', inline: 'start' });
+p.focus({ preventScroll: true }); p.classList.remove('flash'); void p.offsetWidth; p.classList.add('flash');
+}
+
+/* ---------- Overlay ---------- */
+var lastFocus = null;
+function openOverlay() { lastFocus = document.activeElement; $('overlay').hidden = false; buildOverlay(); var c = $('ov-close'); if (c) c.focus(); }
+function closeOverlay() { var o = $('overlay'); if (o.hidden) return; o.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+function buildOverlay(focusKey) {
+var s = $('sheet'); s.textContent = '';
+var head = el('div', 'sheet-head'); var h = el('h2', null, 'Layout and settings'); h.id = 'ov-title'; head.appendChild(h);
+var cl = el('button', 'ghost', 'Close'); cl.type = 'button'; cl.id = 'ov-close'; cl.addEventListener('click', closeOverlay); head.appendChild(cl); s.appendChild(head);
+s.appendChild(el('p', 'help', 'This map mirrors the page: two columns on top, a full-width band below. Select a pane name to jump to it, or use the buttons to reorder it or send it to another area. On a phone everything stacks in this order: left, right, full width.'));
+var map = el('div', 'map');
+[['left', ''], ['right', ''], ['wide', 'w']].forEach(function (zz) {
+var z = zz[0]; var box = el('div', 'zone-box ' + zz[1]); box.appendChild(el('h3', null, ZONE_NAMES[z]));
+if (!layout[z].length) box.appendChild(el('p', 'empty', 'Empty. Send a pane here.'));
+layout[z].forEach(function (id, i) {
+var bar = el('div', 'chipbar'); var go = el('button', 'go', titleOf(id)); go.type = 'button'; go.addEventListener('click', function () { goPane(id); }); bar.appendChild(go);
+function mv(label, aria, disabled, fn, key) {
+var b = el('button', 'mv', label); b.type = 'button'; b.setAttribute('aria-label', aria + ': ' + titleOf(id)); b.disabled = disabled; b.dataset.key = id + ':' + key;
+b.addEventListener('click', function () { fn(); buildOverlay(id + ':' + key); }); bar.appendChild(b);
+}
+mv('↑', 'Move up', i === 0, function () { moveTo(id, z, i - 1); }, 'up');
+mv('↓', 'Move down', i === layout[z].length - 1, function () { moveTo(id, z, i + 1); }, 'down');
+['left', 'right', 'wide'].forEach(function (t) { if (t !== z) mv(t === 'wide' ? 'Full width' : t === 'left' ? 'Left' : 'Right', 'Send to ' + ZONE_NAMES[t].toLowerCase(), false, function () { moveTo(id, t); }, 'to-' + t); });
+box.appendChild(bar);
+});
+map.appendChild(box);
+});
+s.appendChild(map);
+var rs = el('button', 'ghost', 'Reset layout'); rs.type = 'button'; rs.style.marginTop = '10px'; rs.addEventListener('click', function () { layout = validLayout(DEFAULT_LAYOUT); applyLayout(); saveLayout(); buildOverlay(); }); s.appendChild(rs);
+
+var sec = el('div', 'set-sec'); sec.appendChild(el('h3', null, 'Muted keywords and senders'));
+sec.appendChild(el('p', 'help', 'Anything that mentions one of these is hidden from the threads, reading picks and artifact links here, and kept out of the weekly email. Paperpal is muted to start.'));
+var mf = el('form', 'rowform'); mf.autocomplete = 'off';
+var ml = el('label', null, 'Sender or keyword'); var mi = el('input'); mi.type = 'text'; mi.placeholder = 'e.g. paperpal, newsletter, a sender name'; ml.appendChild(mi); mf.appendChild(ml);
+var mb = el('button', 'pri', 'Mute'); mb.type = 'submit'; mf.appendChild(mb);
+mf.addEventListener('submit', function (ev) {
+ev.preventDefault(); var v = mi.value.trim().toLowerCase(); if (!v || muted.indexOf(v) > -1) return;
+muted.push(v); saveMuted(); renderAll(); buildOverlay();
+});
+sec.appendChild(mf);
+var ms = el('div', 'mutes');
+if (!muted.length) ms.appendChild(el('span', 'empty', 'Nothing muted.'));
+muted.forEach(function (m) {
+var chip = el('span', 'mute'); chip.appendChild(el('span', null, m)); var x = el('button', null, '×'); x.type = 'button'; x.setAttribute('aria-label', 'Unmute ' + m);
+x.addEventListener('click', function () { muted = muted.filter(function (y) { return y !== m; }); saveMuted(); renderAll(); buildOverlay(); }); chip.appendChild(x); ms.appendChild(chip);
+});
+sec.appendChild(ms); s.appendChild(sec);
+
+var fs = el('div', 'set-sec'); fs.appendChild(el('h3', null, 'Title font'));
+fs.appendChild(el('p', 'help', 'Applies to the Antone’s Digest title only; everything else uses a plain sans serif. Raleway is the default. EB Garamond is the Garamond option, standing in for Adobe Garamond, which is not available on the open font service this page uses.'));
+var rd = el('div', 'radios'); rd.setAttribute('role', 'radiogroup'); rd.setAttribute('aria-label', 'Title font');
+[['raleway', 'Raleway'], ['garamond', 'EB Garamond']].forEach(function (o) {
+var l = el('label'); var r = el('input'); r.type = 'radio'; r.name = 'hf'; r.value = o[0]; r.checked = headFont === o[0];
+r.addEventListener('change', function () { setFont(o[0]); }); l.appendChild(r); l.appendChild(document.createTextNode(o[1])); rd.appendChild(l);
+});
+fs.appendChild(rd); s.appendChild(fs);
+if (focusKey) { var t = s.querySelector('[data-key="' + focusKey + '"]'); if (t && !t.disabled) t.focus(); else { var any = s.querySelector('[data-key^="' + focusKey.split(':')[0] + ':"]:not(:disabled)'); if (any) any.focus(); } }
+}
+function saveMuted() { lsSet('hd-muted', JSON.stringify(muted)); dSet('prefs', 'muted', { terms: muted }); }
+function setFont(v) {
+headFont = v === 'garamond' ? 'garamond' : 'raleway'; lsSet('hd-head', headFont);
+if (headFont === 'garamond') root.setAttribute('data-head', 'garamond'); else root.removeAttribute('data-head');
+dSet('prefs', 'ui', { head: headFont });
+}
+
+/* ---------- Theme, folding, view modes and chrome ---------- */
+function currentTheme() { var t = root.getAttribute('data-theme'); return (t === 'dark' || t === 'white') ? t : 'light'; }
+function paintTheme() {
+var t = currentTheme();
+$('themeSwitch').setAttribute('aria-checked', String(t === 'dark'));
+$('whiteBtn').setAttribute('aria-pressed', String(t === 'white'));
+}
+function setTheme(t) { root.setAttribute('data-theme', t); lsSet('hd-theme', t); paintTheme(); }
+$('themeSwitch').addEventListener('click', function () { setTheme(currentTheme() === 'dark' ? 'light' : 'dark'); });
+$('whiteBtn').addEventListener('click', function () { setTheme(currentTheme() === 'white' ? 'light' : 'white'); });
+$('layoutBtn').addEventListener('click', openOverlay);
+$('overlay').addEventListener('click', function (ev) { if (ev.target === $('overlay')) closeOverlay(); });
+
+var CHEV = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var FOCUS_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+var ARROW_V = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M8 8l4-4 4 4M8 16l4 4 4-4"/></svg>';
+var ARROW_H = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>';
+
+function foldPane(id, fold) {
+var p = $('pane-' + id); if (!p) return;
+p.classList.toggle('collapsed', !!fold);
+if (fold) collapsed[id] = 1; else delete collapsed[id];
+var b = p.querySelector('.pane-toggle'); if (b) b.setAttribute('aria-expanded', String(!fold));
+}
+function foldAll(f) { PANES.forEach(function (p) { foldPane(p[0], f); }); }
+
+/* focus (immersion) mode */
+function toggleFocus(id) {
+if (focusId) { var prev = focusId; exitFocus(); if (prev === id) return; }
+var p = $('pane-' + id); if (!p) return;
+foldPane(id, false); p.classList.add('focused'); document.body.classList.add('focus-open'); focusId = id; p.scrollTop = 0;
+var fb = p.querySelector('.pane-focus'); if (fb) { fb.setAttribute('aria-pressed', 'true'); fb.setAttribute('aria-label', 'Exit focus'); fb.focus({ preventScroll: true }); }
+}
+function exitFocus() {
+if (!focusId) return; var id = focusId; focusId = '';
+var p = $('pane-' + id); document.body.classList.remove('focus-open'); if (!p) return;
+p.classList.remove('focused');
+var fb = p.querySelector('.pane-focus'); if (fb) { fb.setAttribute('aria-pressed', 'false'); fb.setAttribute('aria-label', 'Focus on ' + titleOf(id)); fb.focus({ preventScroll: true }); }
+}
+function addPaneToggles() {
+PANES.forEach(function (p) {
+var pane = $('pane-' + p[0]); var head = pane && pane.querySelector('.pane-head'); if (!head) return;
+var grip = el('div', 'grip'); grip.setAttribute('aria-hidden', 'true'); pane.insertBefore(grip, head);
+var rz = el('span', 'rz'); rz.setAttribute('aria-hidden', 'true'); pane.appendChild(rz);
+var fb = el('button', 'pane-focus'); fb.type = 'button'; fb.innerHTML = FOCUS_SVG + '<span class="fl">Exit focus</span>';
+fb.setAttribute('aria-label', 'Focus on ' + p[1]); fb.setAttribute('aria-pressed', 'false'); fb.title = 'Focus: fill the screen with this section';
+fb.addEventListener('click', function () { toggleFocus(p[0]); });
+head.appendChild(fb);
+if (p[0] === 'desk') return;
+var b = el('button', 'pane-toggle'); b.type = 'button'; b.innerHTML = CHEV;
+b.setAttribute('aria-controls', 'b-' + p[0]); b.setAttribute('aria-expanded', 'true'); b.setAttribute('aria-label', 'Collapse or expand ' + p[1]);
+b.addEventListener('click', function () { foldPane(p[0], !pane.classList.contains('collapsed')); });
+head.appendChild(b);
+});
+}
+
+/* default / collapse all / expand all */
+function paintView() {
+document.querySelectorAll('#viewSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.view === viewMode)); });
+}
+function applyView(mode) {
+viewMode = mode;
+if (focusId) exitFocus();
+if (mode === 'default') { openSet = defaultKeys(); foldAll(false); renderAll(); }
+else if (mode === 'collapse') { openSet = {}; foldAll(true); renderAll(); }
+else {
+openSet = {}; foldAll(false); renderAll();
+document.querySelectorAll('details[data-key]').forEach(function (d) { d.open = true; openSet[d.dataset.key] = 1; });
+}
+paintView();
+}
+document.querySelectorAll('#viewSeg button').forEach(function (b) { b.addEventListener('click', function () { applyView(b.dataset.view); }); });
+
+/* scroll direction */
+function paintScroll() {
+var b = $('scrollBtn'); b.innerHTML = hs ? ARROW_H : ARROW_V; b.disabled = cvOn;
+b.setAttribute('aria-label', cvOn ? 'Scroll mode is set by the canvas' : (hs ? 'Scroll mode: horizontal. Switch to vertical.' : 'Scroll mode: vertical. Switch to horizontal.'));
+b.title = hs ? 'Scrolling sideways' : 'Scrolling down';
+}
+function setScroll(h, noSave) {
+hs = !!h && !cvOn; root.classList.toggle('hs', hs);
+if (!noSave) lsSet('hd-scroll', hs ? 'h' : 'v');
+paintScroll();
+if (hs) { var g = $('grid'); g.scrollLeft = 0; window.scrollTo({ top: Math.max(0, g.getBoundingClientRect().top + window.pageYOffset - $('bar').offsetHeight - 8) }); }
+}
+$('scrollBtn').addEventListener('click', function () { setScroll(!hs); });
+
+/* floating canvas */
+function cvLoad() { try { var o = JSON.parse(lsGet('hd-canvas') || 'null'); cv = (o && typeof o === 'object') ? o : {}; } catch (e) { cv = {}; } }
+function cvSave() { lsSet('hd-canvas', JSON.stringify(cv)); }
+function cvApply(id) {
+var p = $('pane-' + id), c = cv[id]; if (!p || !c) return;
+p.style.left = c.x + 'px'; p.style.top = c.y + 'px'; p.style.width = c.w + 'px';
+if (c.h) { p.style.height = c.h + 'px'; p.dataset.h = '1'; } else { p.style.height = ''; delete p.dataset.h; }
+}
+function cvTidy() {
+var colW = 480, gap = 24, cols = window.innerWidth >= 1500 ? 3 : window.innerWidth >= 1000 ? 3 : 2, ys = [];
+for (var i = 0; i < cols; i++) ys.push(0);
+cv = {};
+flatOrder().forEach(function (id) {
+var p = $('pane-' + id); if (!p) return;
+var span = (id === 'desk' && cols >= 3) ? 2 : 1, w = span * colW + (span - 1) * gap;
+p.style.width = w + 'px'; p.style.height = ''; delete p.dataset.h;
+var h = p.offsetHeight, c = 0, best = 1e9;
+for (var k = 0; k + span <= cols; k++) { var y = Math.max.apply(null, ys.slice(k, k + span)); if (y < best) { best = y; c = k; } }
+cv[id] = { x: c * (colW + gap), y: best, w: w, h: 0 };
+for (var j = c; j < c + span; j++) ys[j] = best + h + gap;
+cvApply(id);
+});
+cvSave(); cvFit();
+}
+var fitQueued = false;
+function cvFit() {
+if (!cvOn || fitQueued) return; fitQueued = true;
+requestAnimationFrame(function () {
+fitQueued = false; if (!cvOn) return;
+var mr = 0, mb = 0;
+PANES.forEach(function (p) { var n = $('pane-' + p[0]); if (!n) return; mr = Math.max(mr, n.offsetLeft + n.offsetWidth); mb = Math.max(mb, n.offsetTop + n.offsetHeight); });
+var g = $('grid'); g.style.width = (mr + 80) + 'px'; g.style.minHeight = (mb + 120) + 'px';
+});
+}
+function paintCanvas() {
+$('canvasBtn').setAttribute('aria-pressed', String(cvOn)); $('canvasBtn').style.background = cvOn ? 'var(--ink)' : ''; $('canvasBtn').style.color = cvOn ? 'var(--paper)' : '';
+$('tidyBtn').hidden = !cvOn; paintScroll();
+}
+function setCanvas(on, noSave) {
+if (on && window.innerWidth < 700) on = false;
+if (focusId) exitFocus();
+cvOn = !!on; root.classList.toggle('cv', cvOn);
+if (cvOn) {
+hs = false; root.classList.remove('hs'); cvLoad();
+var missing = PANES.some(function (p) { return !cv[p[0]]; });
+if (missing) cvTidy(); else { PANES.forEach(function (p) { cvApply(p[0]); }); cvFit(); }
+} else {
+PANES.forEach(function (p) { var n = $('pane-' + p[0]); if (n) { n.style.left = n.style.top = n.style.width = n.style.height = n.style.zIndex = ''; delete n.dataset.h; } });
+var g = $('grid'); g.style.width = ''; g.style.minHeight = '';
+if (lsGet('hd-scroll') === 'h') setScroll(true, true);
+}
+if (!noSave) lsSet('hd-cv', cvOn ? '1' : '0');
+paintCanvas();
+}
+$('canvasBtn').addEventListener('click', function () { setCanvas(!cvOn); });
+$('tidyBtn').addEventListener('click', function () { cvTidy(); toast('Sections re-flowed.'); });
+
+var drag = null;
+$('grid').addEventListener('pointerdown', function (ev) {
+if (!cvOn || (ev.button != null && ev.button > 0)) return;
+var p = ev.target.closest('.pane'); if (!p) return;
+var rz = ev.target.closest('.rz'), grip = ev.target.closest('.grip'), head = ev.target.closest('.pane-head');
+var tgt = null, mode = '';
+if (rz) { tgt = rz; mode = 'rz'; }
+else if (grip) { tgt = grip; mode = 'mv'; }
+else if (head && !ev.target.closest('button, a, input, select, textarea, summary, [role="tab"]')) { tgt = head; mode = 'mv'; }
+if (!tgt) return;
+drag = { mode: mode, p: p, id: p.id.replace('pane-', ''), x: ev.clientX, y: ev.clientY, l: p.offsetLeft, t: p.offsetTop, w: p.offsetWidth, h: p.offsetHeight, pid: ev.pointerId, tgt: tgt };
+try { tgt.setPointerCapture(ev.pointerId); } catch (e) {}
+p.style.zIndex = ++zTop; p.classList.add('dragging'); ev.preventDefault();
+});
+$('grid').addEventListener('pointermove', function (ev) {
+if (!drag || ev.pointerId !== drag.pid) return;
+var dx = ev.clientX - drag.x, dy = ev.clientY - drag.y, p = drag.p;
+if (drag.mode === 'mv') { p.style.left = Math.max(0, drag.l + dx) + 'px'; p.style.top = Math.max(0, drag.t + dy) + 'px'; }
+else { p.style.width = Math.max(300, drag.w + dx) + 'px'; p.style.height = Math.max(150, drag.h + dy) + 'px'; p.dataset.h = '1'; }
+});
+function endDrag(ev) {
+if (!drag || (ev && ev.pointerId !== drag.pid)) return;
+var p = drag.p; p.classList.remove('dragging');
+cv[drag.id] = { x: p.offsetLeft, y: p.offsetTop, w: p.offsetWidth, h: p.dataset.h ? p.offsetHeight : 0 };
+cvSave(); drag = null; cvFit();
+}
+$('grid').addEventListener('pointerup', endDrag);
+$('grid').addEventListener('pointercancel', endDrag);
+
+function watchChrome() {
+var bar = $('bar'), np = $('nameplate'), grid = $('grid');
+function measure() { root.style.setProperty('--barh', bar.offsetHeight + 'px'); }
+function onScroll() { bar.classList.toggle('scrolled', np.getBoundingClientRect().bottom < 0); }
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', function () { measure(); onScroll(); if (cvOn && window.innerWidth < 700) setCanvas(false); else cvFit(); });
+measure(); onScroll();
+if ('ResizeObserver' in window) {
+new ResizeObserver(measure).observe(bar);
+var ro = new ResizeObserver(cvFit); PANES.forEach(function (p) { var n = $('pane-' + p[0]); if (n) ro.observe(n); });
+}
+if ('IntersectionObserver' in window) {
+var io = new IntersectionObserver(function (es) { if (hs || cvOn) return; es.forEach(function (e) { if (e.isIntersecting) setCurrent(e.target.id.replace('pane-', '')); }); }, { rootMargin: '-140px 0px -65% 0px' });
+PANES.forEach(function (p) { var n = $('pane-' + p[0]); if (n) io.observe(n); });
+}
+grid.addEventListener('scroll', function () {
+if (!hs) return;
+var ids = flatOrder(); for (var i = 0; i < ids.length; i++) { var n = $('pane-' + ids[i]); if (n && n.offsetLeft + n.offsetWidth - 40 > grid.scrollLeft) { setCurrent(ids[i]); break; } }
+}, { passive: true });
+}
+document.addEventListener('keydown', function (ev) {
+if (ev.key === 'Escape') { if (!$('overlay').hidden) closeOverlay(); else if (focusId) exitFocus(); }
+if (ev.key === 'Tab' && !$('overlay').hidden) {
+var f = $('sheet').querySelectorAll('button:not(:disabled), input, select, textarea, a[href]'); if (!f.length) return;
+var first = f[0], last = f[f.length - 1];
+if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); } else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+}
+});
+
+/* ---------- Boot ---------- */
+(function init() {
+var t = lsGet('hd-tab'); if (t === 'advisors') t = 'development'; if (t && TABS.some(function (x) { return x[0] === t; })) tab = t;
+collapsed = {}; openSet = defaultKeys(); var pl = lsGet('hd-playlist'); if (pl) playlist = ytId(pl);
+if (lsGet('hd-head') === 'garamond') headFont = 'garamond';
+try { var m = JSON.parse(lsGet('hd-muted') || 'null'); if (Array.isArray(m)) muted = m.filter(function (x) { return typeof x === 'string'; }); } catch (e) {}
+try { layout = validLayout(JSON.parse(lsGet('hd-layout') || 'null') || DEFAULT_LAYOUT); } catch (e) { layout = validLayout(DEFAULT_LAYOUT); }
+var d = new Date(TODAY_U).toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+$('today').textContent = d; $('weekline').textContent = 'Reading week of ' + fmt(WEEK_KEY);
+paintTheme(); paintView(); paintScroll(); applyLayout(); addPaneToggles(); renderAll(); watchChrome();
+if (lsGet('hd-scroll') === 'h') setScroll(true, true);
+if (lsGet('hd-cv') === '1' && window.innerWidth >= 700) setCanvas(true, true);
+})();
+
+(async function connect() {
+try {
+var c = window.claude && window.claude.use ? await window.claude.use('db') : null;
+if (!c) { loadedApps = true; note('Saving is unavailable in this view, so notes, ideas and the Career Desk last only until you close the page.'); renderAll(); return; }
+db = c; renderAll();
+function snap(name, fn) { db.collection(name).onSnapshot(function (s) { fn(s.docs.map(function (d) { var v = d.data() || {}; v.id = d.id; return v; })); }, function () {}); }
+snap('dismissed', function (docs) { dismissed = {}; docs.forEach(function (d) { dismissed[d.id] = true; }); renderAll(); });
+snap('threads', function (docs) { customThreads = docs.map(function (d) { return { rid: d.id, area: d.area, title: d.title || '', left: d.left || '', started: d.started || '', created: d.created || '' }; }); renderAll(); });
+snap('ideas', function (docs) { ideas = docs; renderWriting(); });
+snap('qbupdates', function (docs) { qbs = docs; if (tab === 'ministry') renderDesk(); });
+snap('advisors', function (docs) { advisors = docs; if (tab === 'development') renderDesk(); });
+snap('craft', function (docs) { craft = docs; renderCareer(); });
+snap('feed', function (docs) { dbFeed = docs; renderDesign(); });
+snap('reading', function (docs) { dbReading = docs; renderReading(); renderWriting(); });
+snap('readpicks', function (docs) { readFlags = {}; docs.forEach(function (d) { if (d.read) readFlags[d.id] = true; }); renderReading(); renderWriting(); });
+snap('prefs', function (docs) {
+docs.forEach(function (d) {
+if (d.id === 'layout') { layout = validLayout(d); lsSet('hd-layout', JSON.stringify(layout)); applyLayout(); if (!$('overlay').hidden) buildOverlay(); }
+if (d.id === 'playlist' && typeof d.list === 'string') { playlist = ytId(d.list); lsSet('hd-playlist', playlist); renderPlaylist(); }
+if (d.id === 'muted' && Array.isArray(d.terms)) { muted = d.terms.filter(function (x) { return typeof x === 'string'; }); renderAll(); }
+if (d.id === 'ui' && d.head) { headFont = d.head === 'garamond' ? 'garamond' : 'raleway'; lsSet('hd-head', headFont); if (headFont === 'garamond') root.setAttribute('data-head', 'garamond'); else root.removeAttribute('data-head'); }
+});
+});
+} catch (e) { loadedApps = true; note('Saving is unavailable in this view, so notes, ideas and the Career Desk last only until you close the page.'); renderAll(); }
+})();
+})();
+</script>
